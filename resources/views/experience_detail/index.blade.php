@@ -8,10 +8,8 @@
     <div class="container mx-auto py-6">
         <h1 class="text-2xl font-semibold mb-4">Experience Details</h1>
 
-        <!-- Button to create a new experience detail -->
         <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md mb-4">Create New Experience</a>
 
-        <!-- Table to display experience details -->
         <div class="overflow-x-auto bg-white shadow-md rounded-lg">
             <table class="min-w-full table-auto">
                 <thead class="bg-gray-200">
@@ -34,16 +32,14 @@
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->client_name }}</td>
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->status }}</td>
                             <td class="px-6 py-3 text-sm">
-                                <!-- Display images for this experience -->
                                 @foreach($experienceDetail->images as $image)
                                     <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
                                 @endforeach
                             </td>
                             <td class="px-6 py-3 text-sm">
-                                <!-- Edit Button -->
                                 <a href="{{ route('experiences.edit', $experienceDetail->id) }}" class="inline-block text-yellow-600 hover:text-yellow-800 mr-2">Edit</a>
+                                <a href="{{ route('experiences.pdffs', $experienceDetail->id) }}" class="inline-block text-yellow-600 hover:text-yellow-800 mr-2">download fach sheet</a>
 
-                                <!-- Delete Button -->
                                 <form action="{{ route('experiences.destroy', $experienceDetail->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this record?');">
                                     @csrf
                                     @method('DELETE')
