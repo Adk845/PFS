@@ -38,6 +38,7 @@
                             </td>
                             <td class="px-6 py-3 text-sm">
                                 <a href="{{ route('experiences.edit', $experienceDetail->id) }}" class="inline-block text-yellow-600 hover:text-yellow-800 mr-2">Edit</a>
+                                <a href="{{ route('experiences.pdffs', $experienceDetail->id) }}" class="inline-block text-yellow-600 hover:text-yellow-800 mr-2">download fach sheet</a>
 
                                 <form action="{{ route('experiences.destroy', $experienceDetail->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this record?');">
                                     @csrf
