@@ -50,7 +50,7 @@
             
             <div class="flex gap-2"  v-for="(category, index) in categories" :key='index'>               
                 <input type="text" name="category[]" id="category"  :placeholder="'categories ' + (index + 1)" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                    <div class="flex">
+                    <div class="flex items-center">
                         <button @click="removeInput1(index)" class="w-full sm:w-auto rounded-full bg-blue-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                             -
                         </button>
