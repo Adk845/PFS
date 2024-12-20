@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExperienceDetail;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
+
 
 class ExperienceDetailController extends Controller
 {
@@ -100,7 +103,85 @@ class ExperienceDetailController extends Controller
     ], 201);
 }
 
-   
+public function edit($id)
+{
+    $experienceDetail = ExperienceDetail::findOrFail($id);
+    return view('experience_detail.edit', compact('experienceDetail'));
+}
+
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'category' => 'required|string|max:255',
+        'status' => 'required|string|max:255',
+        'project_no' => 'required|string|max:255',
+        'project_name' => 'required|string|max:255',
+        'client_name' => 'required|string|max:255',
+        'durations' => 'required|string|max:255',
+        'date_project_start' => 'required|date',
+        'date_project_end' => 'required|date',
+        'locations' => 'required|string|max:255',
+        'kbli_number' => 'required|string|max:255',
+        'scope_of_work' => 'required|string',
+        'image' => 'nullable|array',
+        'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $experienceDetail = ExperienceDetail::findOrFail($id);
+
+    $experienceDetail->category = $request->category;
+    $experienceDetail->status = $request->status;
+    $experienceDetail->project_no = $request->project_no;
+    $experienceDetail->project_name = $request->project_name;
+    $experienceDetail->client_name = $request->client_name;
+    $experienceDetail->durations = $request->durations;
+    $experienceDetail->date_project_start = $request->date_project_start;
+    $experienceDetail->date_project_end = $request->date_project_end;
+    $experienceDetail->locations = $request->locations;
+    $experienceDetail->kbli_number = $request->kbli_number;
+    $experienceDetail->scope_of_work = $request->scope_of_work;
+
+    $experienceDetail->save();
+
+    if ($request->has('image')) {
+        foreach ($request->file('image') as $file) {
+            $path = $file->store('images', 'public'); 
+            Image::create([ 
+                'experience_detail_id' => $experienceDetail->id,
+                'foto' => $path,
+            ]);
+        }
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Experience detail updated successfully.',
+        'data' => $experienceDetail,
+    ], 200);
+}
+
+public function destroy($id)
+{
+    $experienceDetail = ExperienceDetail::findOrFail($id);
+
+    $images = Image::where('experience_detail_id', $id)->get();
+    foreach ($images as $image) {
+        if (Storage::disk('public')->exists($image->foto)) {
+            Storage::disk('public')->delete($image->foto);
+        }
+        $image->delete();
+    }
+
+    $experienceDetail->delete();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Experience detail deleted successfully.',
+    ], 200);
+}
+
+
     
 
 
