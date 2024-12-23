@@ -4,9 +4,9 @@
         <h1 class="text-2xl font-semibold mb-4">Edit</h1>
     
         <!-- Form to create a new experience detail -->
-        <form method="POST" action="{{ route('experiences.store') }}" enctype="multipart/form-data" class="space-y-4">
+        <form method="POST" action="{{ route('experiences.update', $experienceDetail->id) }}" enctype="multipart/form-data" class="space-y-4">
             @csrf
-    
+            @method('PUT')
             <div>
                 <label for="project_name" class="block text-sm font-medium text-gray-700">Project Name</label>
                 <input type="text" name="project_name" id="project_name" value="{{ old('project_name', $experienceDetail->project_name) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
@@ -34,8 +34,7 @@
                     <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                     <input type="text" name="status" id="status" value="{{ old('status', $experienceDetail->status) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                 </div>
-        
-               
+                       
               
                 <div>
                     <label for="locations" class="block text-sm font-medium text-gray-700">Location</label>
@@ -72,6 +71,11 @@
                     <label for="date_project_end" class="block text-sm font-medium text-gray-700">End Date</label>
                     <input type="date" name="date_project_end" id="date_project_end" value="{{ old('date_project_end', $experienceDetail->date_project_end) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                 </div>
+
+                <div>
+                    <label for="durations" class="block text-sm font-medium text-gray-700">Durations</label>
+                    <input type="text" name="durations" id="durations" value="{{ old('durationss', $experienceDetail->durations) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                </div>
            </div>
     
             <div>
@@ -84,7 +88,8 @@
                 <input type="file" name="image[]" id="image" accept="image/*" onchange="previewImages(event)" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" multiple>
             </div> --}}
             
-            <div class="kontainer_upload_image grid grid-cols-3 gap-2">
+            {{-- =============== TUTUP SEMENTARA ======================= --}}
+            {{-- <div class="kontainer_upload_image grid grid-cols-3 gap-2">
                 <div class="flex" v-for="(image, index) in images" :key='image.id' >
                     <div>
                         <label for="image" class="block text-sm font-medium text-gray-700" v-text="'image ' + (index + 1)"></label>
@@ -100,19 +105,20 @@
     
             <div class="button ms-1 col-md-1">
                 <button @click="addInput2" type="button" class="w-full sm:w-auto rounded-full bg-blue-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">+</button>
-            </div>
+            </div> --}}
     
             {{-- BAGIAN PREVIEW GAMBAR  --}}
-            <div id="image-preview-container" class="grid grid-cols-10 gap-4 mt-4">
+            {{-- =============== TUTUP SEMENTARA ======================= --}}
+            {{-- <div id="image-preview-container" class="grid grid-cols-10 gap-4 mt-4">
                 <div v-for="(preview, id) in previews" :key='id'>
                     <img :src='preview' alt="image preview"class="w-32 h-32 object-cover rounded-md shadow-md">
                 </div>
-            </div>
+            </div> --}}
     
            
     
             <div class="max-w-60">
-                <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Create Experience Detail</button>
+                <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Save</button>
             </div>
         </form>
     </div>

@@ -62,13 +62,14 @@ class ExperienceDetailController extends Controller
         'status' => 'required|string|max:255',
         'project_no' => 'required|string|max:255',
         'project_name' => 'required|string|max:255',
-        'client_name' => 'required|string|max:255',      
+        'client_name' => 'required|string|max:255', 
+        'durations' => 'required|string|max:255',     
         'date_project_start' => 'required|date',
         'date_project_end' => 'required|date',
         'locations' => 'required|string|max:255',
         'kbli_number' => 'required|string|max:255',
         'scope_of_work' => 'required|string',
-        'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
     $experienceDetail = new ExperienceDetail();
@@ -77,7 +78,7 @@ class ExperienceDetailController extends Controller
     $experienceDetail->project_no = $request->project_no;
     $experienceDetail->project_name = $request->project_name;
     $experienceDetail->client_name = $request->client_name;
-    $experienceDetail->durations = "not required";
+    $experienceDetail->durations = $request->durations;
     $experienceDetail->date_project_start = $request->date_project_start;
     $experienceDetail->date_project_end = $request->date_project_end;
     $experienceDetail->locations = $request->locations;
@@ -123,25 +124,25 @@ public function edit_api($id)
 
 public function update(Request $request, $id)
 {
+    // dd($request->all());
     $request->validate([
-        'category' => 'required|string|max:255',
+        'categories.*' => 'required|string|max:255',
         'status' => 'required|string|max:255',
         'project_no' => 'required|string|max:255',
         'project_name' => 'required|string|max:255',
-        'client_name' => 'required|string|max:255',
-        'durations' => 'required|string|max:255',
+        'client_name' => 'required|string|max:255', 
+        'durations' => 'required|string|max:255',     
         'date_project_start' => 'required|date',
         'date_project_end' => 'required|date',
         'locations' => 'required|string|max:255',
         'kbli_number' => 'required|string|max:255',
         'scope_of_work' => 'required|string',
-        'image' => 'nullable|array',
-        'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
-
+    //  dd($request->all());
     $experienceDetail = ExperienceDetail::findOrFail($id);
 
-    $experienceDetail->category = $request->category;
+    $experienceDetail->category = implode("|", $request->categories ?? []);
     $experienceDetail->status = $request->status;
     $experienceDetail->project_no = $request->project_no;
     $experienceDetail->project_name = $request->project_name;
@@ -164,12 +165,12 @@ public function update(Request $request, $id)
             ]);
         }
     }
-
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Experience detail updated successfully.',
-        'data' => $experienceDetail,
-    ], 200);
+    return redirect()->route('experiences.index');
+    // return response()->json([
+    //     'status' => 'success',
+    //     'message' => 'Experience detail updated successfully.',
+    //     'data' => $experienceDetail,
+    // ], 200);
 }
 
 public function destroy($id)
