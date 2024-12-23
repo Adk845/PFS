@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ExperienceDetailController::class, 'index2'])->name('welcome');
+Route::get('/', [ExperienceDetailController::class, 'guest'])->name('guest');
 
 
 
@@ -28,11 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('experiences', ExperienceDetailController::class);
+    Route::get('/pdfs', [ExperienceDetailController::class, 'pdf'])->name('experiences.pdffs');
 
-
-
-
-
+   
 });
 
 require __DIR__.'/auth.php';
