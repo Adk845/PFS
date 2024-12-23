@@ -13,7 +13,7 @@
             <table class="min-w-full table-auto">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">#</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project No</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project Name</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Client Name</th>
@@ -53,7 +53,7 @@
                                         <x-dropdown-link :href="route('experiences.edit', $experienceDetail->id)">
                                            Edit
                                         </x-dropdown-link>
-                                        <x-dropdown-link :href="route('experiences.pdffs')">
+                                        <x-dropdown-link :href=" route('experiences.pdffs', $experienceDetail->id)">
                                            Download Fact Sheet
                                         </x-dropdown-link>
                 
