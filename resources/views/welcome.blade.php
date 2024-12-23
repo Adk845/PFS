@@ -15,17 +15,18 @@
     </head>
     <body>
    
-    <div class="max-h-max">
+    <div class="max-h-max bg-blue-500 flex justify-center">
     @if (Route::has('login'))
-        <div class="p-6 text-right bg-blue-500 flex justify-between items-center">
+        <div class="container text-right  flex justify-between items-center h-16">
             <!-- Logo dengan kotak putih -->
-            <a href="{{ url('/') }}" class="flex items-center">
-                <div class="bg-white p-2 rounded-lg shadow-md">
-                    <img src="{{ asset('images/isolutions.png') }}" alt="Logo" class="h-8">
-                </div>
-            </a>
+            <div class="shrink-0 flex items-center bg-white p-4">
+                <a href="{{ route('experiences.index') }}">
+                    <x-application-logo class="block h-9 w-auto fill-current text-white dark:text-gray-200" />
+                </a>
+            </div>
 
             <!-- Menu Login/Register -->
+            <div>
             @auth
                 <a href="{{ url('/experiences') }}" class="font-semibold text-white hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
             @else
@@ -35,6 +36,7 @@
                     <a href="{{ route('register') }}" class="ml-4 font-semibold text-white hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
                 @endif
             @endauth
+            </div>
         </div>
     @endif
 </div>
