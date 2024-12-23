@@ -153,12 +153,12 @@
                     console.log(id)
                 },
                 addInput2() {
-                    if(this.images.length !== 3){
+                    if(this.images.length !== 5){
                         this.images.push({
                         id: Date.now()                        
                     })
                     } else {
-                        alert("maksimum upload 3 images")
+                        alert("maksimum upload 5 images")
                     }
                     
                     console.log(this.images.length)
