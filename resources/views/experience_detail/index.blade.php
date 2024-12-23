@@ -50,17 +50,17 @@
                                     </x-slot>
                 
                                     <x-slot name="content">
-                                        <x-dropdown-link :href="route('profile.edit')">
+                                        <x-dropdown-link :href="route('experiences.edit', $experienceDetail->id)">
                                            Edit
                                         </x-dropdown-link>
-                                        <x-dropdown-link :href="route('profile.edit')">
+                                        <x-dropdown-link :href="route('experiences.pdffs')">
                                            Download Fact Sheet
                                         </x-dropdown-link>
                 
                                         <!-- Authentication -->
-                                        <form method="POST" action="{{ route('logout') }}">
+                                        <form method="POST" action="{{ route('experiences.destroy', $experienceDetail->id) }}">
                                             @csrf
-                
+                                            @method('DELETE')
                                             <x-dropdown-link :href="route('experiences.destroy', $experienceDetail->id)"
                                                     onclick="event.preventDefault();
                                                                 this.closest('form').submit();">
