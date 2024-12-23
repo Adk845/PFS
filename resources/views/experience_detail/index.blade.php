@@ -36,14 +36,47 @@
                                 @endforeach
                             </td>
                             <td class="px-6 py-3 text-sm">
-                                <a href="{{ route('experiences.edit', $experienceDetail->id) }}" class="inline-block text-yellow-600 hover:text-yellow-800 mr-2">Edit</a>
+                                <x-dropdown>
+                                    <x-slot name="trigger">
+                                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                            <div>Action</div>
+                
+                                            <div class="ms-1">
+                                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                        </button>
+                                    </x-slot>
+                
+                                    <x-slot name="content">
+                                        <x-dropdown-link :href="route('profile.edit')">
+                                           Edit
+                                        </x-dropdown-link>
+                                        <x-dropdown-link :href="route('profile.edit')">
+                                           Download Fact Sheet
+                                        </x-dropdown-link>
+                
+                                        <!-- Authentication -->
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                
+                                            <x-dropdown-link :href="route('experiences.destroy', $experienceDetail->id)"
+                                                    onclick="event.preventDefault();
+                                                                this.closest('form').submit();">
+                                                Delete
+                                            </x-dropdown-link>
+                                        </form>
+                                    </x-slot>
+                                </x-dropdown>
+                                {{-- <a href="{{ route('experiences.edit', $experienceDetail->id) }}" class="inline-block text-yellow-600 hover:text-yellow-800 mr-2">Edit</a>
                                 <a href="{{ route('experiences.pdffs', $experienceDetail->id) }}" class="inline-block text-yellow-600 hover:text-yellow-800 mr-2">download fach sheet</a>
 
                                 <form action="{{ route('experiences.destroy', $experienceDetail->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this record?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-800">Delete</button>
-                                </form>
+                                </form> --}}
                             </td>
                         </tr>
                     @endforeach

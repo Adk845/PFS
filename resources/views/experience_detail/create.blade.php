@@ -72,6 +72,11 @@
                 <label for="date_project_end" class="block text-sm font-medium text-gray-700">End Date</label>
                 <input type="date" name="date_project_end" id="date_project_end" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
             </div>
+
+            <div>
+                <label for="durations" class="block text-sm font-medium text-gray-700">Durations</label>
+                <input type="text" name="durations" id="durations" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+            </div>
        </div>
 
         <div>
