@@ -6,7 +6,6 @@
     </x-slot>
 
     <div class="container mx-auto py-6">
-        <h1 class="text-2xl font-semibold mb-4">Experience Details</h1>
 
         <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md mb-4">Create New Experience</a>
 
@@ -31,7 +30,7 @@
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_name }}</td>
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->client_name }}</td>
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->status }}</td>
-                            <td class="px-6 py-3 text-sm">
+                            <td class="px-6 py-3 text-sm grid grid-cols-3">
                                 @foreach($experienceDetail->images as $image)
                                     <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
                                 @endforeach
