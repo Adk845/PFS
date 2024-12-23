@@ -14,19 +14,20 @@ class ExperienceDetailController extends Controller
 
 
     public function generatePdffs($id)
-    {
-        $experiences = ExperienceDetail::find($id);
-        if (!$experiences) {
-            return redirect()->route('experience_detail.index')->with('error', 'Experience Detail not found.');
-        }
-    
-       
-        $pdf = PDF::loadView('experience_detail.pdffs', ['experiences' => $experiences])
-            ->setPaper('a4', 'portrait'); 
-    
-        
-        return $pdf->stream('ExperienceDetail.pdf');
+{
+    $images = Image::where('experience_detail_id', $id)->get();
+    $experiences = ExperienceDetail::find($id);
+    if (!$experiences) {
+        return redirect()->route('experience_detail.index')->with('error', 'Experience Detail not found.');
     }
+
+    $pdf = PDF::loadView('experience_detail.pdffs', [
+        'experiences' => $experiences,
+        'images' => $images
+    ])
+    ->setPaper('a4', 'portrait');
+    return $pdf->stream('ExperienceDetail.pdf');
+}
     
     
     public function index(Request $request)

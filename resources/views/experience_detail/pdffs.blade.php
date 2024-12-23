@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('{{ public_path('images/1.png') }}');
+            background-image: url('{{ public_path('images/2.png') }}');
             background-size: cover;     
             background-position: center;    
             background-repeat: no-repeat;
             height: 100vh;  
             width: 100%;    
+            font-size: 18px;
         }
 
         .content {
@@ -35,6 +37,35 @@
             margin-top: 170px;
             margin-left: 70px;
         }
+
+        .image-wrapper {
+            margin-top: 48px;
+            display: flex;
+            flex-wrap: wrap;  
+            gap: 20px;  
+            margin-left: 60px;
+            width: 80%;  
+        }
+
+        .image-wrapper img {
+            width: 31%;  
+            height: auto;  
+            object-fit: cover; 
+            margin-top: 10px;
+
+        }
+
+        .image-wrapper img:nth-child(4),
+        .image-wrapper img:nth-child(5) {
+            width: 47%;  
+            height: 25%;  
+        }
+
+        td{
+
+            vertical-align: top;
+        }
+
     </style>
     <title>Document</title>
 </head>
@@ -74,7 +105,9 @@
     <tr>
         <td><b>Durations</b></td>
         <td >:</td>
-        <td ><div  style="width: 430px">{{$experiences->durations}}</div></td>                    
+        <td ><div  style="width: 430px">{{$experiences->durations}}</div></td>
+        
+        
     </tr>
 
     <tr>
@@ -108,7 +141,20 @@
     </tr>
 </table>
 
-
+<table>
+        <tr>
+            <td colspan="5">
+                <div class="image-wrapper">
+                    <!-- Images, first 3 in the top row, last 2 in the bottom -->
+                    <img src="{{ public_path('storage/' . $images[0]->foto) }}" alt="Image 1">
+                    <img src="{{ public_path('storage/' . $images[1]->foto) }}" alt="Image 2">
+                    <img src="{{ public_path('storage/' . $images[2]->foto) }}" alt="Image 3">
+                    <img src="{{ public_path('storage/' . $images[3]->foto) }}" alt="Image 4">
+                    <img src="{{ public_path('storage/' . $images[4]->foto) }}" alt="Image 5">
+                </div>
+            </td>
+        </tr>
+    </table>
 
 </div>
 </body>
