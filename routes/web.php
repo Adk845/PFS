@@ -20,7 +20,7 @@ Route::get('/', [ExperienceDetailController::class, 'guest'])->name('guest');
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return redirect()->route('experiences.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -29,8 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('experiences', ExperienceDetailController::class);
     Route::get('/experiences/{experiences}/pdffs', [ExperienceDetailController::class, 'generatePDFFS'])->name('experiences.pdffs');
-
    
 });
+
+
 
 require __DIR__.'/auth.php';
