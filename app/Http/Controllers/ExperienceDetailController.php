@@ -13,21 +13,62 @@ class ExperienceDetailController extends Controller
 {
 
 
-//     public function generatePdffs($id)
-// {
-//     $images = Image::where('experience_detail_id', $id)->get();
-//     $experiences = ExperienceDetail::find($id);
-//     if (!$experiences) {
-//         return redirect()->route('experience_detail.index')->with('error', 'Experience Detail not found.');
-//     }
+    public function generatePdfAll(Request $request)
+    {
+        
+        $search = $request->input('search');
+        $category = $request->input('category');
+        
+      
+        $query = ExperienceDetail::query();
+        
+        if ($search) {
+            $query->where('project_name', 'like', '%' . $search . '%');
+        }
+    
+        if ($category) {
+            $query->where('category', $category);
+        }
+    
+      
+        $experiences = $query->get();
+    
+        if ($experiences->isEmpty()) {
+            return redirect()->route('experiences.index')->with('error', 'No experiences found.');
+        }
+    
+        
+        $experienceIds = $experiences->pluck('id');  
+        $images = Image::whereIn('experience_detail_id', $experienceIds)->get();  
+    
+        
+        $pdf = PDF::loadView('pdf.all_experience', ['experiences' => $experiences, 'images' => $images])
+                   ->setPaper('a4', 'landscape');
+        
+       
+        return $pdf->stream('all-experiences.pdf');
+    }
+    
+    
 
-//     $pdf = PDF::loadView('experience_detail.pdffs', [
-//         'experiences' => $experiences,
-//         'images' => $images
-//     ])
-//     ->setPaper('a4', 'portrait');
-//     return $pdf->stream('ExperienceDetail.pdf');
-// }
+
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        $category = $request->input('category');
+    
+        $experiences = ExperienceDetail::query()
+            ->when($search, function($query, $search) {
+                return $query->where('project_name', 'like', "%{$search}%")
+                             ->orWhere('client_name', 'like', "%{$search}%");
+            })
+            ->when($category, function($query, $category) {
+                return $query->where('category', $category);
+            })
+            ->paginate(10);  // Adjust pagination as needed
+    
+        return view('experience_detail.index', compact('experiences'));
+    }
 
 public function generatePdffs($id)
 {
@@ -46,15 +87,8 @@ public function generatePdffs($id)
 }
     
     
-    public function index(Request $request)
-    {
-       
-        $experiences = ExperienceDetail::all();
 
-        return view('experience_detail.index', [
-            'experiences' => $experiences
-        ]);
-    }
+
 
     public function guest(Request $request)
     {
@@ -75,7 +109,7 @@ public function generatePdffs($id)
     public function store(Request $request)
 {     
     $request->validate([
-        'categories.*' => 'required|string|max:255',
+       'category' => 'required|string|max:255',
         'status' => 'required|string|max:255',
         'project_no' => 'required|string|max:255',
         'project_name' => 'required|string|max:255',
@@ -90,7 +124,7 @@ public function generatePdffs($id)
     ]);
 
     $experienceDetail = new ExperienceDetail();
-    $experienceDetail->category = implode("|", $request->categories ?? []);
+    $experienceDetail->category = $request->category;
     $experienceDetail->status = $request->status;
     $experienceDetail->project_no = $request->project_no;
     $experienceDetail->project_name = $request->project_name;
@@ -125,12 +159,16 @@ public function generatePdffs($id)
 
 public function edit($id)
 {
-    //=============contoh EAGER LOADING with(['images']) 'images' ini ngikutin nama method relation nya, disini nama model nya 'image'
-    //==============tapi relations model nya di experienceDetail model 'images'
+    // Menarik data ExperienceDetail beserta relasi 'Images'
     $experienceDetail = ExperienceDetail::with(['Images'])->findOrFail($id);
-    // dd($experienceDetail);
-    return view('experience_detail.edit', compact('experienceDetail'));
+
+    // Ambil kategori dari $experienceDetail, misalnya jika ada kolom 'category' di ExperienceDetail
+    $category = $experienceDetail->category;
+
+    // Kirimkan ke tampilan
+    return view('experience_detail.edit', compact('experienceDetail', 'category'));
 }
+
 
 public function edit_api($id)
 {
@@ -141,9 +179,8 @@ public function edit_api($id)
 
 public function update(Request $request, $id)
 {
-    // dd($request->all());
     $request->validate([
-        'categories.*' => 'required|string|max:255',
+        'category' => 'required|string|max:255',
         'status' => 'required|string|max:255',
         'project_no' => 'required|string|max:255',
         'project_name' => 'required|string|max:255',
@@ -156,10 +193,9 @@ public function update(Request $request, $id)
         'scope_of_work' => 'required|string',
         'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
-    //  dd($request->all());
     $experienceDetail = ExperienceDetail::findOrFail($id);
 
-    $experienceDetail->category = implode("|", $request->categories ?? []);
+    $experienceDetail->category = $request->category;
     $experienceDetail->status = $request->status;
     $experienceDetail->project_no = $request->project_no;
     $experienceDetail->project_name = $request->project_name;
@@ -183,11 +219,7 @@ public function update(Request $request, $id)
         }
     }
     return redirect()->route('experiences.index');
-    // return response()->json([
-    //     'status' => 'success',
-    //     'message' => 'Experience detail updated successfully.',
-    //     'data' => $experienceDetail,
-    // ], 200);
+   
 }
 
 public function destroy($id)

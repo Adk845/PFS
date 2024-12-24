@@ -41,25 +41,28 @@
                 <label for="locations" class="block text-sm font-medium text-gray-700">Location</label>
                 <input type="text" name="locations" id="locations" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
             </div>
+</div>
+
+            <div>
+    <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+    <select name="category" id="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+        <option value="" disabled selected>Choose category</option>
+        <option value="Travel Arrangement">Travel Arrangement (Flight and Accommodations)</option>
+        <option value="Marchandise/ATK">Marchandise/ATK</option>
+        <option value="Business Development">Business Development</option>
+        <option value="IT">IT</option>
+        <option value="Manpower Supply">Manpower Supply</option>
+        <option value="Event Organizer">Event Organizer</option>
+        <option value="Printing">Printing</option>
+        <option value="Car Rental">Car Rental</option>
+        <option value="Company Loan">Company Loan</option>
+        <option value="Rent Building">Rent Building</option>
+    </select>
+</div>
+
     
           
-        </div>
-        <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-        
-        <div class="grid grid-cols-4 gap-4">
-            
-            <div class="flex gap-2"  v-for="(category, index) in categories" :key='category.id'>               
-                <input type="text" name="categories[]" id="category"  :placeholder="'category ' + (index + 1)" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                    <div class="flex items-center">
-                        <button @click="removeInput1(category.id)" type="button" class="w-full sm:w-auto rounded-full bg-blue-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                            -
-                        </button>
-                    </div>
-            </div>  
-        </div>
-        <div class="button ms-1 col-md-1">
-            <button @click="addInput1" type="button" class="w-full sm:w-auto rounded-full bg-blue-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">+</button>
-        </div>
+    
 
 
         <div class="flex gap-4">
@@ -74,7 +77,7 @@
             </div>
 
             <div>
-                <label for="durations" class="block text-sm font-medium text-gray-700">Durations</label>
+                <label for="durations" class="block text-sm font-medium text-gray-700">Durations (Month)</label>
                 <input type="text" name="durations" id="durations" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
             </div>
        </div>
@@ -84,10 +87,6 @@
             <textarea name="scope_of_work" id="scope_of_work" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required></textarea>
         </div>
 
-        {{-- <div>
-            <label for="image" class="block text-sm font-medium text-gray-700">Upload Images</label>
-            <input type="file" name="image[]" id="image" accept="image/*" onchange="previewImages(event)" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" multiple>
-        </div> --}}
         
         <div class="kontainer_upload_image grid grid-cols-3 gap-2">
             <div class="flex" v-for="(image, index) in images" :key='image.id' >
@@ -171,7 +170,6 @@
 
                     this.images = this.images.filter(image => image.id !== id)
                     delete this.previews[id];
-                    // console.log()
                 },
                 previewImage(id, event) {
                     const file = event.target.files[0];
@@ -188,30 +186,6 @@
             }
         }).mount('#app')
 
-    //     function previewImages(event) {
-    //         const files = event.target.files;
-    //         const previewContainer = document.getElementById('image-preview-container');
-            
-    //         // Kosongkan kontainer sebelum menambahkan preview baru
-    //         previewContainer.innerHTML = '';
-
-    //         // Loop melalui file yang diunggah
-    //         Array.from(files).forEach(file => {
-    //             if (file.type.startsWith('image/')) {
-    //                 const reader = new FileReader();
-
-    //                 reader.onload = function (e) {
-    //                     const img = document.createElement('img');
-    //                     img.src = e.target.result; // URL hasil membaca file
-    //                     img.alt = file.name;
-    //                     img.classList.add('w-32', 'h-32', 'object-cover', 'rounded-md', 'shadow-md'); // TailwindCSS
-    //                     previewContainer.appendChild(img);
-    //                 };
-
-    //                 reader.readAsDataURL(file); // Membaca file sebagai Data URL
-    //             }
-    //         });
-    // }
 
 
 </script>
