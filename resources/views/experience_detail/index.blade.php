@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="container mx-auto py-6">
+    <div class="px-6 py-6">
 
         <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md mb-4">Create New Experience</a>
 
@@ -13,10 +13,16 @@
             <table class="min-w-full table-auto">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th>
+                        {{-- <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th> --}}
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project No</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project Name</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Client Name</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">KBLI number</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Category</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">durations</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">period</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">locations</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Scope of Work</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Images</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
@@ -25,11 +31,17 @@
                 <tbody class="divide-y">
                     @foreach($experiences as $experienceDetail)
                         <tr>
-                            <td class="px-6 py-3 text-sm">{{ $loop->iteration }}</td>
+                            {{-- <td class="px-6 py-3 text-sm">{{ $loop->iteration }}</td> --}}
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_no }}</td>
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_name }}</td>
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->client_name }}</td>
+                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->kbli_number }}</td>
+                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->category }}</td>
+                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->durations }}</td>
+                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->date_project_start }} - {{ $experienceDetail->date_project_end }}</td>
+                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->locations }}</td>
                             <td class="px-6 py-3 text-sm">{{ $experienceDetail->status }}</td>
+                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->scope_of_work }}</td>
                             <td class="px-6 py-3 text-sm grid grid-cols-3">
                                 @foreach($experienceDetail->images as $image)
                                     <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
