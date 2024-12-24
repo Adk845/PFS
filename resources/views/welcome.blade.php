@@ -14,10 +14,9 @@
         
     </head>
     <body>
-   
-    <div class="max-h-max bg-blue-500 flex justify-center">
+    <div class="w-full bg-blue-500 flex justify-center">
     @if (Route::has('login'))
-        <div class="container text-right  flex justify-between items-center h-16">
+        <div class="w-full mx-auto py-4 px-10 flex justify-between items-center h-16">
             <!-- Logo dengan kotak putih -->
             <div class="shrink-0 flex items-center bg-white p-4">
                 <a href="{{ route('experiences.index') }}">
@@ -42,41 +41,54 @@
 </div>
 
 
-            <div class="container mx-auto py-6">
-                <h1 class="text-2xl font-semibold mb-4">Experience Details</h1>
 
-                <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-            <table class="min-w-full table-auto">
-                <thead class="bg-gray-200">
+
+<div class="w-full mx-auto py-6 px-10 mt-10"> 
+    <h1 class="text-3xl font-semibold mb-6 text-left">Experience Details</h1>
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg w-full">
+        <table class="min-w-full table-auto border-gray-300">
+            <thead class="bg-gray-200 border-gray-300 ">
+                <tr>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project No</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project Name</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Client Name</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">KBLI number</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Category</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Durations</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Period</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Locations</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Scope of Work</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Images</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y">
+                @foreach($experiences as $experienceDetail)
                     <tr>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project No</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project Name</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Client Name</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Images</th>
-                        
+                        <td class="px-6 py-3 text-sm">{{ $loop->iteration }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_no }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_name }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->client_name }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->kbli_number }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->category }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->durations }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->date_project_start }} - {{ $experienceDetail->date_project_end }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->locations }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->scope_of_work }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->status }}</td>
+                        <td class="px-6 py-3 text-sm grid grid-cols-3">
+                            @foreach($experienceDetail->images as $image)
+                                <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
+                            @endforeach
+                        </td>
                     </tr>
-                </thead>
-                <tbody class="divide-y">
-                    @foreach($experiences as $experienceDetail)
-                        <tr>
-                            <td class="px-6 py-3 text-sm">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_no }}</td>
-                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_name }}</td>
-                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->client_name }}</td>
-                            <td class="px-6 py-3 text-sm">{{ $experienceDetail->status }}</td>
-                            <td class="px-6 py-3 text-sm grid grid-cols-3">
-                                @foreach($experienceDetail->images as $image)
-                                    <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
-                                @endforeach
-                            </td>
-                           
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
             </div>
          
     </body>
