@@ -37,13 +37,30 @@
                        
               
                 <div>
-                    <label for="locations" class="block text-sm font-medium text-gray-700">Location</label>
-                    <input type="text" name="locations" id="locations" value="{{ old('locations', $experienceDetail->locations) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-                </div>
-        
-              
-            </div>
-            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+    <label for="locations" class="block text-sm font-medium text-gray-700">Location</label>
+    <input type="text" name="locations" id="locations" value="{{ old('locations', $experienceDetail->locations) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+</div>
+</div>
+
+<div>
+    <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+    <select name="category" id="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+        <option value="" disabled {{ old('category', $category) == '' ? 'selected' : '' }}>Choose category</option>
+        <option value="Travel Arrangement" {{ old('category', $category) == 'Travel Arrangement' ? 'selected' : '' }}>Travel Arrangement (Flight and Accommodations)</option>
+        <option value="Marchandise/ATK" {{ old('category', $category) == 'Marchandise/ATK' ? 'selected' : '' }}>Marchandise/ATK</option>
+        <option value="Business Development" {{ old('category', $category) == 'Business Development' ? 'selected' : '' }}>Business Development</option>
+        <option value="IT" {{ old('category', $category) == 'IT' ? 'selected' : '' }}>IT</option>
+        <option value="Manpower Supply" {{ old('category', $category) == 'Manpower Supply' ? 'selected' : '' }}>Manpower Supply</option>
+        <option value="Event Organizer" {{ old('category', $category) == 'Event Organizer' ? 'selected' : '' }}>Event Organizer</option>
+        <option value="Printing" {{ old('category', $category) == 'Printing' ? 'selected' : '' }}>Printing</option>
+        <option value="Car Rental" {{ old('category', $category) == 'Car Rental' ? 'selected' : '' }}>Car Rental</option>
+        <option value="Company Loan" {{ old('category', $category) == 'Company Loan' ? 'selected' : '' }}>Company Loan</option>
+        <option value="Rent Building" {{ old('category', $category) == 'Rent Building' ? 'selected' : '' }}>Rent Building</option>
+    </select>
+</div>
+
+
+            <!-- <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
             
             <div class="grid grid-cols-4 gap-4">
                 
@@ -58,7 +75,7 @@
             </div>
             <div class="button ms-1 col-md-1">
                 <button @click="addInput1" type="button" class="w-full sm:w-auto rounded-full bg-blue-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">+</button>
-            </div>
+            </div> -->
     
     
             <div class="flex gap-4">
@@ -115,7 +132,51 @@
                 </div>
             </div> --}}
     
-           
+           <div class="kontainer_upload_image grid grid-cols-3 gap-2">
+    <!-- Iterasi untuk menampilkan input gambar dan preview -->
+    <div class="flex" v-for="(image, index) in images" :key='image.id'>
+        <div>
+            <label for="image" class="block text-sm font-medium text-gray-700" v-text="'Image ' + (index + 1)"></label>
+            <!-- Input untuk upload gambar -->
+            <input 
+                @change="previewImage(image.id, $event)" 
+                type="file" 
+                name="images[]" 
+                :id="'image' + (index + 1)" 
+                accept="image/*" 
+                class="mt-1 block w-80 border-gray-300 rounded-md shadow-sm"
+            >
+        </div>
+        
+        <!-- Tampilkan gambar sebelumnya jika ada -->
+        <div v-if="image.preview" class="mt-2">
+            <img :src="image.preview" alt="image preview" class="w-32 h-32 object-cover rounded-md shadow-md">
+        </div>
+        
+        <!-- Tombol untuk menghapus gambar -->
+        <div class="flex items-center">
+            <button @click="removeInput2(image.id)" type="button" class="w-full sm:w-auto rounded-full bg-red-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-red-600">
+                -
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Tombol untuk menambah input gambar baru -->
+<div class="button ms-1 col-md-1">
+    <button @click="addInput2" type="button" class="w-full sm:w-auto rounded-full bg-blue-500 px-3.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        +
+    </button>
+</div>
+
+{{-- BAGIAN PREVIEW GAMBAR --}}
+<div id="image-preview-container" class="grid grid-cols-10 gap-4 mt-4">
+    <!-- Preview gambar yang baru di-upload -->
+    <div v-for="(preview, id) in previews" :key="id">
+        <img :src="preview" alt="image preview" class="w-32 h-32 object-cover rounded-md shadow-md">
+    </div>
+</div>
+
     
             <div class="max-w-60">
                 <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Save</button>
