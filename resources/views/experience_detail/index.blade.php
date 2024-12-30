@@ -11,11 +11,14 @@
         <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Create New Experience</a>
 
         <form method="GET" action="{{ route('experiences.index') }}" class="flex items-center">
-            <div class="w-40">
-                <input type="text" name="search" id="search" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" value="{{ request('search') }}" placeholder="Search...">
+            <div class="w-64 relative mr-2"> <!-- Perpanjang dengan w-64 -->
+                <input type="text" name="search" id="search" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10" value="{{ request('search') }}" placeholder="Search...">
+                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600">
+                    <i class="fa fa-search"></i> <!-- Gunakan ikon pencarian Font Awesome -->
+                </button>
             </div>
 
-            <div class="w-40">
+            <div class="w-64"> <!-- Perpanjang dengan w-64 -->
                 <select name="category" id="category" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     <option value="" {{ !request('category') ? 'selected' : '' }}>Category</option>
                     <option value="Travel Arrangement" {{ request('category') == 'Travel Arrangement' ? 'selected' : '' }}>Travel Arrangement</option>
@@ -37,6 +40,9 @@
         </form>
     </div>
 </div>
+
+
+
 
 <div class="w-full mx-auto py-2 px-6">
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
