@@ -135,11 +135,13 @@
            <div class="kontainer_upload_image grid grid-cols-3 gap-2">
     <!-- Iterasi untuk menampilkan input gambar dan preview -->
     <div class="flex" v-for="(image, index) in images" :key='image.id'>
-        <div>
+        <div :id='image.id'>
             <label for="image" class="block text-sm font-medium text-gray-700" v-text="'Image ' + (index + 1)"></label>
             <!-- Input untuk upload gambar -->
+            {{-- <input type="hidden" name="image_id" :value='image.id' :id='image.id'> --}}
             <input 
-                @change="previewImage(image.id, $event)" 
+                {{-- @change="previewImage(image.id, $event)"  --}}
+                @change="previewImage(inndex, $event)" 
                 type="file" 
                 name="images[]" 
                 :id="'image' + (index + 1)" 
@@ -149,9 +151,9 @@
         </div>
         
         <!-- Tampilkan gambar sebelumnya jika ada -->
-        <div v-if="image.preview" class="mt-2">
+        {{-- <div v-if="image.preview" class="mt-2">
             <img :src="image.preview" alt="image preview" class="w-32 h-32 object-cover rounded-md shadow-md">
-        </div>
+        </div> --}}
         
         <!-- Tombol untuk menghapus gambar -->
         <div class="flex items-center">
@@ -159,6 +161,9 @@
                 -
             </button>
         </div>
+    </div>
+    <div id="for_delete">
+
     </div>
 </div>
 
@@ -172,8 +177,14 @@
 {{-- BAGIAN PREVIEW GAMBAR --}}
 <div id="image-preview-container" class="grid grid-cols-10 gap-4 mt-4">
     <!-- Preview gambar yang baru di-upload -->
-    <div v-for="(preview, id) in previews" :key="id">
-        <img :src="preview" alt="image preview" class="w-32 h-32 object-cover rounded-md shadow-md">
+    <div v-for="(preview, id) in previews" :key='id'>
+        <div class="flex-row">
+            <div class="flex justify-center">
+                <h3 v-text="'Image ' + (id + 1)"></h3>
+            </div>
+            <img :src='preview.path' alt="image preview" class="w-32 h-32 object-cover rounded-md shadow-md mt-3">
+        </div>
+        
     </div>
 </div>
 
@@ -196,7 +207,8 @@
                     return {
                         categories: [],
                         images: [],
-                        previews: {}                   
+                        previews: [],
+                        index_for_prviews: 6                   
                     }
                 },
                 mounted() {
@@ -225,7 +237,11 @@
                                 vue_id: number += 1,
                                 image: image.foto
                             })
-                            this.previews[image.id] = image.foto
+                            // this.previews[image.id] = {{ Storage::url('') }} + image.foto
+                            this.previews.push({
+                                id: image.id,
+                                path: {{ Storage::url('') }} + image.foto,
+                            })
                            })
                            console.log(this.previews)
                         })
@@ -241,7 +257,7 @@
                         console.log(this.categories)
                     },
                     addInput2() {
-                        if(this.images.length !== 3){
+                        if(this.images.length !== 5){
                             this.images.push({
                             id: Date.now()                        
                         })
@@ -256,21 +272,40 @@
                         // this.images = this.images.filter(function(category){
                         //     image.id !== id
                         // });
-    
+                        const existingPreviewIndex = this.previews.findIndex(preview => preview.id === id);
+                            if (existingPreviewIndex !== -1) { 
+                                $('#for_delete').append(` <input type="hidden" name="images_id_delete[]" value="${id}">`);
+                                this.previews.splice(existingPreviewIndex, 1)
+                                console.log(this.previews)                                
+                            }
+
                         this.images = this.images.filter(image => image.id !== id)
                         delete this.previews[id];
                         // console.log()
                     },
                     previewImage(id, event) {
+                        // $('#' + id).append(` <input type="hidden" name="images_id[]" value="${id}">`);
                         const file = event.target.files[0];
                         if (file && file.type.startsWith("image/")) {
                             const reader = new FileReader();
                             reader.onload = (e) => {
-                               this.previews[id] = e.target.result
+                                const existingPreviewIndex = this.previews.findIndex(preview => preview.id === id);
+                                if (existingPreviewIndex !== -1) { 
+                                    $('#' + id).append(` <input type="hidden" name="images_id[]" value="${id}">`);                   
+                                    this.previews[existingPreviewIndex].path = e.target.result;
+                                } else {
+                                    this.previews.push({
+                                        id: this.index_for_prviews += 1,
+                                        path: e.target.result
+                                    })
+                                }
+                            //    this.previews[id] = e.target.result
+                            console.log(e.target.result)
                             };
                             reader.readAsDataURL(file);
                         }
                         console.log(this.previews);
+                        
                     }
                     
                 }

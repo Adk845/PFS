@@ -179,6 +179,18 @@ public function edit_api($id)
 
 public function update(Request $request, $id)
 {
+    // dd($request->all());
+    // if ($request->has('images_id')) {
+    //     foreach($request->images_id as $index =>  $image_id) {
+    //         $image = Image::find($image_id);
+    //         dd($image);
+    //         if($image){
+    //             Storage::disk('images')->delete($image->path);
+    //             dd('ketemu');
+    //         }
+    //     }
+    // }
+    // dd('gak dapet');
     $request->validate([
         'category' => 'required|string|max:255',
         'status' => 'required|string|max:255',
@@ -209,8 +221,34 @@ public function update(Request $request, $id)
 
     $experienceDetail->save();
 
-    if ($request->has('image')) {
-        foreach ($request->file('image') as $file) {
+    // untuk mengedit dengan menghapus gambar yang sudah ada 
+    
+    if ($request->has('images_id_delete')) {
+        foreach($request->images_id_delete as $index =>  $image_id) {
+            $image = Image::find($image_id);
+            // dd($image->foto);
+            if($image){
+               Storage::disk('public')->delete($image->foto);
+               $image->delete();
+                // dd('success deleted image')
+            }
+        }
+    }
+
+    // untuk mengedit dengan mengganti gambar dengan yang baru, hapus yang lama dan ganti dengan yang baru
+    if ($request->has('images_id')) {
+        foreach($request->images_id as $index =>  $image_id) {
+            $image = Image::find($image_id);
+            // dd($image->foto);
+            if($image){
+               Storage::disk('public')->delete($image->foto);
+               $image->delete();
+                // dd('success deleted image')
+            }
+        }
+    }
+    if ($request->has('images')) {
+        foreach ($request->file('images') as $file) {
             $path = $file->store('images', 'public'); 
             Image::create([ 
                 'experience_detail_id' => $experienceDetail->id,
