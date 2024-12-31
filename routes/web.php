@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('experiences', ExperienceDetailController::class);
     Route::get('/experiences/{experiences}/pdffs', [ExperienceDetailController::class, 'generatePDFFS'])->name('experiences.pdffs');
     Route::get('/experiences/{experiences}/bast', [ExperienceDetailController::class, 'generateBAST'])->name('experiences.bast');
+    Route::get('export', [ExperienceDetailController::class, 'export'])->name('experiences.export');
+Route::post('import', [ExperienceDetailController::class, 'import'])->name('experiences.import');
 
 Route::get('/experiences/pdf/all', [ExperienceDetailController::class, 'generatePdfAll'])->name('experiences.pdfAll');
    
