@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('project_name');
             $table->string('client_name');
             $table->string('durations');
+            $table->string('amount');
             $table->date('date_project_start');
             $table->date('date_project_end');
             $table->string('locations');

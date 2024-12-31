@@ -41,7 +41,6 @@
                 <label for="locations" class="block text-sm font-medium text-gray-700">Location</label>
                 <input type="text" name="locations" id="locations" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
             </div>
-</div>
 
             <div>
     <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
@@ -60,7 +59,14 @@
     </select>
 </div>
 
-    
+<div>
+                <label for="amount" class="block text-sm font-medium text-gray-700">Amount Contract</label>
+                <input type="text" name="amount" id="amount" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+            </div>
+
+</div>
+
+          
           
     
 
