@@ -86,6 +86,24 @@ public function generatePdffs($id)
     return $pdf->stream('ExperienceDetail.pdf');
 }
     
+
+
+public function generateBast($id)
+{
+    $images = Image::where('experience_detail_id', $id)->get();
+    $experiences = ExperienceDetail::find($id);
+    if (!$experiences) {
+        return redirect()->route('experience_detail.index')->with('error', 'Experience Detail not found.');
+    }
+
+    $pdf = PDF::loadView('experience_detail.bast', [
+        'experiences' => $experiences,
+        'images' => $images
+    ])
+    ->setPaper('a4', 'portrait');
+    return $pdf->stream('Certificate.pdf');
+}
+    
     
 
 
@@ -118,6 +136,8 @@ public function generatePdffs($id)
         'date_project_start' => 'required|date',
         'date_project_end' => 'required|date',
         'locations' => 'required|string|max:255',
+        'amount' => 'required|string|max:255',
+
         'kbli_number' => 'required|string|max:255',
         'scope_of_work' => 'required|string',
         'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -133,6 +153,8 @@ public function generatePdffs($id)
     $experienceDetail->date_project_start = $request->date_project_start;
     $experienceDetail->date_project_end = $request->date_project_end;
     $experienceDetail->locations = $request->locations;
+    $experienceDetail->amount = $request->amount;
+
     $experienceDetail->kbli_number = $request->kbli_number;
     $experienceDetail->scope_of_work = $request->scope_of_work;
 
@@ -201,6 +223,8 @@ public function update(Request $request, $id)
         'date_project_start' => 'required|date',
         'date_project_end' => 'required|date',
         'locations' => 'required|string|max:255',
+        'amount' => 'required|string|max:255',
+
         'kbli_number' => 'required|string|max:255',
         'scope_of_work' => 'required|string',
         'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -216,6 +240,7 @@ public function update(Request $request, $id)
     $experienceDetail->date_project_start = $request->date_project_start;
     $experienceDetail->date_project_end = $request->date_project_end;
     $experienceDetail->locations = $request->locations;
+    $experienceDetail->amount = $request->amount;
     $experienceDetail->kbli_number = $request->kbli_number;
     $experienceDetail->scope_of_work = $request->scope_of_work;
 

@@ -60,6 +60,8 @@
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Locations</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Scope of Work</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Amount Contract</th>
+
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Images</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
                 </tr>
@@ -78,6 +80,8 @@
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->locations }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->scope_of_work }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->status }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->amount }}</td>
+
                         <td class="px-6 py-3 text-sm grid grid-cols-3">
                             @foreach($experienceDetail->images as $image)
                                 <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
@@ -100,7 +104,11 @@
                                        Edit
                                     </x-dropdown-link>
                                     <x-dropdown-link :href="route('experiences.pdffs', $experienceDetail->id)">
-                                       Download PDF FactSheet
+                                       Download FactSheet
+                                    </x-dropdown-link>
+
+                                    <x-dropdown-link :href="route('experiences.bast', $experienceDetail->id)">
+                                       Download BAST
                                     </x-dropdown-link>
                                     <form method="POST" action="{{ route('experiences.destroy', $experienceDetail->id) }}">
                                         @csrf

@@ -40,7 +40,7 @@
     <label for="locations" class="block text-sm font-medium text-gray-700">Location</label>
     <input type="text" name="locations" id="locations" value="{{ old('locations', $experienceDetail->locations) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
 </div>
-</div>
+
 
 <div>
     <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
@@ -58,6 +58,17 @@
         <option value="Rent Building" {{ old('category', $category) == 'Rent Building' ? 'selected' : '' }}>Rent Building</option>
     </select>
 </div>
+
+
+
+<div>
+    <label for="amount" class="block text-sm font-medium text-gray-700">Location</label>
+    <input type="text" name="amount" id="amount" value="{{ old('amount', $experienceDetail->amount) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+</div>
+
+</div>
+
+
 
 
             <!-- <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
