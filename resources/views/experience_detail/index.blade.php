@@ -36,7 +36,42 @@
 
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Apply</button>
 
-            <a href="{{ route('experiences.pdfAll', ['search' => request('search'), 'category' => request('category')]) }}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ml-4" target="_blank">Download All</a>
+
+            <div class="d-flex dropdown relative">
+    <!-- Dropdown Toggle Button -->
+    <button class="dropdown-toggle bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ml-4 w-full md:w-auto" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        Actions
+    </button>
+
+    <!-- Dropdown Menu -->
+    <ul class="dropdown-menu w-full min-w-[200px] mt-2 shadow-lg rounded-md bg-white ring-1 ring-gray-200 z-10" aria-labelledby="dropdownMenuButton">
+        <!-- Download All Button -->
+        <li>
+            <a href="{{ route('experiences.pdfAll', ['search' => request('search'), 'category' => request('category')]) }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Download All</a>
+        </li>
+
+        <!-- Export Projects -->
+        <li>
+            <a href="{{ route('experiences.export') }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Export Pfs</a>
+        </li>
+
+        <!-- Import Form -->
+        <li>
+            <div class="px-4 py-2">
+                <form action="{{ route('experiences.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="file" class="form-label text-sm text-gray-700">Upload File</label>
+                        <input type="file" id="file" name="file" class="form-control mt-1 block w-full text-sm text-gray-700" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm mt-3 w-full">Import</button>
+                </form>
+            </div>
+        </li>
+    </ul>
+</div>
+
+
         </form>
     </div>
 </div>

@@ -7,11 +7,29 @@ use App\Models\Image;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PfsExport;
 
 
 class ExperienceDetailController extends Controller
 {
 
+    public function export() 
+    {
+        return Excel::download(new PfsExport, 'pfs.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv', // Validasi tipe file
+        ]);
+
+        // Lakukan import
+        Excel::import(new PfsImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Data imported successfully!');
+    }
 
     public function generatePdfAll(Request $request)
     {
