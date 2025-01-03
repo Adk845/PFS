@@ -9,6 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PfsExport;
+use App\Imports\PfsImport;
 
 
 class ExperienceDetailController extends Controller
@@ -21,6 +22,7 @@ class ExperienceDetailController extends Controller
 
     public function import(Request $request)
     {
+        // dd($request);
         $request->validate([
             'file' => 'required|mimes:xlsx,xls,csv', // Validasi tipe file
         ]);

@@ -23,7 +23,7 @@ class PfsImport implements ToModel, WithHeadingRow
 
         // Mencari proyek berdasarkan ID
         $experience = ExperienceDetail::find($row['id']);
-
+        // dd($this->getProjectData($row, $projectStart, $projectFinish));
         if ($experience) {
             // Jika proyek ditemukan, perbarui semua kolomnya
             $experience->update($this->getProjectData($row, $projectStart, $projectFinish));
@@ -48,7 +48,8 @@ class PfsImport implements ToModel, WithHeadingRow
     }
 
     private function getProjectData(array $row, $projectStart, $projectFinish)
-    {
+    { 
+        // dd($row);
         return [
             'category' => $row['category'],
             'status' => $row['status'],
@@ -56,7 +57,7 @@ class PfsImport implements ToModel, WithHeadingRow
             'project_name' => $row['project_name'],
             'client_name' => $row['client_name'],
             'durations' => $row['durations'],
-            'amount' => $row['amount'],
+            'amount' => $row['amount_contract'],
             'date_project_start' => $projectStart,
             'date_project_end' => $projectFinish,
             'locations' => $row['locations'],
