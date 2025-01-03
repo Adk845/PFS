@@ -5,32 +5,30 @@ namespace App\Imports;
 use App\Models\ExperienceDetail;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Carbon\Carbon; // Import Carbon for date handling
-use Illuminate\Support\Facades\Log; // Import Log for debugging
+use Carbon\Carbon;
 
 class PfsImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        // Debugging untuk memeriksa data yang diterima
-        Log::info('Imported Row:', $row);
+        // Pastikan ID ada
+        if (empty($row['id'])) {
+            // Jika ID tidak ada, buat entri baru
+            return new ExperienceDetail($this->getProjectData($row, null, null));
+        }
 
+        // Format tanggal jika ada dan validasi
         $projectStart = !empty($row['date_project_start']) ? $this->formatDate($row['date_project_start']) : null;
         $projectFinish = !empty($row['date_project_end']) ? $this->formatDate($row['date_project_end']) : null;
 
-        // Cek jika 'id' kosong atau tidak, jika kosong maka buat data baru
-        if (empty($row['id'])) {
-            Log::info('Inserting new project with data:', $row);
-            return new ExperienceDetail($this->getProjectData($row, $projectStart, $projectFinish));
-        }
+        // Mencari proyek berdasarkan ID
+        $experience = ExperienceDetail::find($row['id']);
 
-        // Cari data project berdasarkan 'id'
-        $project = ExperienceDetail::find($row['id']);
-        if ($project) {
-            Log::info('Updating project with ID: ' . $row['id']);
-            $project->update($this->getProjectData($row, $projectStart, $projectFinish));
+        if ($experience) {
+            // Jika proyek ditemukan, perbarui semua kolomnya
+            $experience->update($this->getProjectData($row, $projectStart, $projectFinish));
         } else {
-            Log::info('Inserting new project with data:', $row);
+            // Jika proyek tidak ditemukan, tambahkan data baru
             return new ExperienceDetail($this->getProjectData($row, $projectStart, $projectFinish));
         }
     }
@@ -38,18 +36,19 @@ class PfsImport implements ToModel, WithHeadingRow
     private function formatDate($date)
     {
         try {
-            // Coba parsing tanggal ke format yang standar 'Y-m-d'
             return Carbon::parse($date)->format('Y-m-d');
         } catch (\Exception $e) {
-            // Jika gagal parsing, kembalikan null
-            Log::error('Error parsing date: ' . $date, ['exception' => $e->getMessage()]);
-            return null;
+            return null; // Kembalikan null jika gagal
         }
+    }
+
+    private function isValidDate($date)
+    {
+        return $date && \DateTime::createFromFormat('Y-m-d', $date) !== false;
     }
 
     private function getProjectData(array $row, $projectStart, $projectFinish)
     {
-        // Mapping data dari baris Excel ke field-model ExperienceDetail
         return [
             'category' => $row['category'],
             'status' => $row['status'],
@@ -57,10 +56,10 @@ class PfsImport implements ToModel, WithHeadingRow
             'project_name' => $row['project_name'],
             'client_name' => $row['client_name'],
             'durations' => $row['durations'],
+            'amount' => $row['amount'],
             'date_project_start' => $projectStart,
             'date_project_end' => $projectFinish,
             'locations' => $row['locations'],
-            'amount' => $row['amount'],
             'kbli_number' => $row['kbli_number'],
             'scope_of_work' => $row['scope_of_work'],
         ];

@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [ExperienceDetailController::class, 'guest'])->name('guest');
+Route::get('/', function () {
+    return view('auth/login');
+});
+
 
 
 
@@ -31,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/experiences/{experiences}/pdffs', [ExperienceDetailController::class, 'generatePDFFS'])->name('experiences.pdffs');
     Route::get('/experiences/{experiences}/bast', [ExperienceDetailController::class, 'generateBAST'])->name('experiences.bast');
     Route::get('export', [ExperienceDetailController::class, 'export'])->name('experiences.export');
-Route::post('import', [ExperienceDetailController::class, 'import'])->name('experiences.import');
+Route::post('/import', [ExperienceDetailController::class, 'import'])->name('experiences.import');
 
 Route::get('/experiences/pdf/all', [ExperienceDetailController::class, 'generatePdfAll'])->name('experiences.pdfAll');
    

@@ -16,12 +16,15 @@ class ExperienceDetail extends Model
         'project_name',
         'client_name',
         'durations',
+        'amount',
         'date_project_start',
         'date_project_end',
         'locations',
         'kbli_number',
         'scope_of_work',
     ];
+
+    
 
     public function images()
     {

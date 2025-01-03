@@ -5,8 +5,7 @@ namespace App\Exports;
 use App\Models\ExperienceDetail;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Carbon\Carbon; // Import Carbon for date handling
-use Illuminate\Support\Collection; // Import Collection for return type hint
+use Carbon\Carbon;
 
 class PfsExport implements FromCollection, WithHeadings
 {
@@ -41,9 +40,10 @@ class PfsExport implements FromCollection, WithHeadings
                 $experience->client_name,
                 $experience->durations,
                 $experience->amount,
-                // Format date or return null if the date is not set
-                $this->formatDate($experience->date_project_start),
-                $this->formatDate($experience->date_project_end),
+                $experience->date_project_start ? Carbon::parse($experience->date_project_start)->format('Y-m-d') : null,
+                $experience->date_project_end ? Carbon::parse($experience->date_project_end)->format('Y-m-d') : null,
+                // $experience->date_project_start ? $experience->date_project_start->format('Y-m-d') : null, // Format tanggal atau null
+                // $experience->date_project_end ? $experience->date_project_end->format('Y-m-d') : null, // Format tanggal atau null
                 $experience->locations,
                 $experience->kbli_number,
                 $experience->scope_of_work,
@@ -57,10 +57,10 @@ class PfsExport implements FromCollection, WithHeadings
      * @param  string|null  $date
      * @return string|null
      */
-    private function formatDate($date)
-    {
-        return $date ? Carbon::parse($date)->format('Y-m-d') : null;
-    }
+    // private function formatDate($date)
+    // {
+    //     return $date ? Carbon::parse($date)->format('Y-m-d') : null;
+    // }
 
     /**
      * Set the headings for the Excel file.
