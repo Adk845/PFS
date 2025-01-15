@@ -20,7 +20,16 @@
                 </button>
             </div>
 
-            <div class="w-64"> <!-- Perpanjang dengan w-64 -->
+            <div class="w-40 mr-2"> <!-- Perpanjang dengan w-64 -->
+                <select name="pagination" id="pagination" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                    <option value="" {{ !request('pagination') ? 'selected' : '' }}>Pagination</option>
+                    <option value="10" {{ request('pagination') == '10' ? 'selected' : '' }}>10</option>
+                    <option value="50" {{ request('pagination') == '50' ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('pagination') == '100' ? 'selected' : '' }}>100</option>
+                </select>
+            </div>
+
+            <div class="w-64 mr-2"> <!-- Perpanjang dengan w-64 -->
                 <select name="category" id="category" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     <option value="" {{ !request('category') ? 'selected' : '' }}>Category</option>
                     <option value="Travel Arrangement" {{ request('category') == 'Travel Arrangement' ? 'selected' : '' }}>Travel Arrangement</option>
@@ -35,7 +44,6 @@
                     <option value="Rent Building" {{ request('category') == 'Rent Building' ? 'selected' : '' }}>Rent Building</option>
                 </select>
             </div>
-
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Apply</button>
         </form>
 
