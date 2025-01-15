@@ -76,6 +76,15 @@ class ExperienceDetailController extends Controller
     {
         $search = $request->input('search');
         $category = $request->input('category');
+        $paginate = $request->input('pagination');
+        // if(isset($request->pagination)){
+        //     dd($paginate);
+        // }
+        // if(isset($request->asc)){
+        //     $orderDirection = 'asc';
+        // } elseif(isset($request->desc)){
+        //     $orderDirection = 'desc';
+        // }
     
         $experiences = ExperienceDetail::query()
             ->when($search, function($query, $search) {
@@ -84,11 +93,13 @@ class ExperienceDetailController extends Controller
             })
             ->when($category, function($query, $category) {
                 return $query->where('category', $category);
-            })
-            ->paginate(10);  // Adjust pagination as needed
-
-            
+            })->paginate($paginate);  // Adjust pagination as needed
     
+            $experiences->appends($request->all());
+            // if(isset($request->category)){
+            //     $experiences->appends($request->all());
+            //     return($experiences);
+            // }
         return view('experience_detail.index', compact('experiences'));
     }
 
