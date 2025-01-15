@@ -26,12 +26,14 @@
                     <option value="10" {{ request('pagination') == '10' ? 'selected' : '' }}>10</option>
                     <option value="50" {{ request('pagination') == '50' ? 'selected' : '' }}>50</option>
                     <option value="100" {{ request('pagination') == '100' ? 'selected' : '' }}>100</option>
+                    <option value="all" {{ request('pagination') == 'all' ? 'selected' : '' }}>All</option>
                 </select>
             </div>
 
             <div class="w-64 mr-2"> <!-- Perpanjang dengan w-64 -->
                 <select name="category" id="category" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                     <option value="" {{ !request('category') ? 'selected' : '' }}>Category</option>
+                    <option value="" {{ request('category') == 'all' ? 'selected' : '' }}>All</option>
                     <option value="Travel Arrangement" {{ request('category') == 'Travel Arrangement' ? 'selected' : '' }}>Travel Arrangement</option>
                     <option value="Marchandise/ATK" {{ request('category') == 'Marchandise/ATK' ? 'selected' : '' }}>Marchandise/ATK</option>
                     <option value="Business Development" {{ request('category') == 'Business Development' ? 'selected' : '' }}>Business Development</option>
@@ -115,15 +117,22 @@
     </div>
 </div>
 
+@if ($experiences instanceof \Illuminate\Pagination\LengthAwarePaginator || $experiences instanceof \Illuminate\Pagination\Paginator)
 
-
+<div class="w-56  py-2 px-6">
+    <p class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">
+        Page : {{ $experiences->currentpage() }} from {{ $experiences->lastpage() }}
+    </p>
+</div>
+    
+@endif
 
 <div class="w-full mx-auto py-2 px-6">
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
         <table class="min-w-full table-auto ">
             <thead class="bg-gray-200 ">
                 <tr>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th>
+                    {{-- <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th> --}}
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project No</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project Name</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Client Name</th>
@@ -143,7 +152,7 @@
             <tbody class="divide-y">
                 @foreach($experiences as $experienceDetail)
                     <tr>
-                        <td class="px-6 py-3 text-sm">{{ $loop->iteration }}</td>
+                        {{-- <td class="px-6 py-3 text-sm">{{ $loop->iteration }}</td> --}}
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_no }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_name }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->client_name }}</td>
@@ -207,7 +216,10 @@
 
 
 <!-- Pagination -->
-{{ $experiences->links() }}
+@if ($experiences instanceof \Illuminate\Pagination\LengthAwarePaginator || $experiences instanceof \Illuminate\Pagination\Paginator)
+{{ $experiences->links() }}    
+@endif
+
 
     </div>
 </x-app-layout>
