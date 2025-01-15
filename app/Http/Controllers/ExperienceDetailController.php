@@ -156,11 +156,11 @@ public function generateBast($id)
         'date_project_start' => 'required|date',
         'date_project_end' => 'required|date',
         'locations' => 'required|string|max:255',
-        'amount' => 'required|string|max:255',
+        'amount' => 'nullable|string|max:255',
 
         'kbli_number' => 'required|string|max:255',
-        'scope_of_work' => 'required|string',
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'scope_of_work' => 'required|string|max:600',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gifmax:6048',
     ]);
 
     $experienceDetail = new ExperienceDetail();
@@ -243,11 +243,11 @@ public function update(Request $request, $id)
         'date_project_start' => 'required|date',
         'date_project_end' => 'required|date',
         'locations' => 'required|string|max:255',
-        'amount' => 'required|string|max:255',
+        'amount' => 'nullable|string|max:255',
 
         'kbli_number' => 'required|string|max:255',
-        'scope_of_work' => 'required|string',
-        'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        'scope_of_work' => 'required|string|max:600',
+        'images.*' => 'image|mimes:jpeg,png,jpg,gifmax:6048',
     ]);
     $experienceDetail = ExperienceDetail::findOrFail($id);
 

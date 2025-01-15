@@ -1,71 +1,25 @@
-<?php 
+<?php
 
 namespace App\Exports;
 
 use App\Models\ExperienceDetail;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Carbon\Carbon;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class PfsExport implements FromCollection, WithHeadings
+class PfsExport implements FromCollection, WithHeadings, WithMapping
 {
     /**
-     * Get data from the database.
-     *
-     * @return \Illuminate\Support\Collection
+     * Mengambil data ExperienceDetail untuk di-export.
      */
     public function collection()
     {
-        return ExperienceDetail::all([
-            'id',
-            'category', 
-            'status', 
-            'project_no', 
-            'project_name', 
-            'client_name', 
-            'durations', 
-            'amount',
-            'date_project_start', 
-            'date_project_end', 
-            'locations', 
-            'kbli_number', 
-            'scope_of_work'
-        ])->map(function ($experience) {
-            return [
-                $experience->id,
-                $experience->category,
-                $experience->status,
-                $experience->project_no,
-                $experience->project_name,
-                $experience->client_name,
-                $experience->durations,
-                $experience->amount,
-                $experience->date_project_start ? Carbon::parse($experience->date_project_start)->format('Y-m-d') : null,
-                $experience->date_project_end ? Carbon::parse($experience->date_project_end)->format('Y-m-d') : null,
-                // $experience->date_project_start ? $experience->date_project_start->format('Y-m-d') : null, // Format tanggal atau null
-                // $experience->date_project_end ? $experience->date_project_end->format('Y-m-d') : null, // Format tanggal atau null
-                $experience->locations,
-                $experience->kbli_number,
-                $experience->scope_of_work,
-            ];
-        });
+        // Ambil data ExperienceDetail dari database
+        return ExperienceDetail::all();
     }
 
     /**
-     * Format the date or return null if it's not a valid date.
-     *
-     * @param  string|null  $date
-     * @return string|null
-     */
-    // private function formatDate($date)
-    // {
-    //     return $date ? Carbon::parse($date)->format('Y-m-d') : null;
-    // }
-
-    /**
-     * Set the headings for the Excel file.
-     *
-     * @return array
+     * Header kolom yang muncul di file Excel
      */
     public function headings(): array
     {
@@ -77,12 +31,42 @@ class PfsExport implements FromCollection, WithHeadings
             'Project Name',
             'Client Name',
             'Durations',
-            'Amount Contract',
+            'Amount',
             'Date Project Start',
             'Date Project End',
             'Locations',
             'KBLI Number',
-            'Scope of Work'
+            'Scope of Work',
         ];
+    }
+
+    /**
+     * Mapping data untuk setiap baris
+     */
+    public function map($experience): array
+    {
+        return [
+            $experience->id,
+            $experience->category,
+            $experience->status,
+            $experience->project_no,
+            $experience->project_name,
+            $experience->client_name,
+            $experience->durations,
+            $experience->amount,
+            $this->formatDate($experience->date_project_start),
+            $this->formatDate($experience->date_project_end),
+            $experience->locations,
+            $experience->kbli_number,
+            $experience->scope_of_work,
+        ];
+    }
+
+    /**
+     * Format tanggal ke format Y-m-d
+     */
+    private function formatDate($date)
+    {
+        return $date ? \Carbon\Carbon::parse($date)->format('Y-m-d') : null;
     }
 }

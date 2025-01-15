@@ -25,15 +25,38 @@
                     <input type="text" name="project_no" id="project_no" value="{{ old('project_no', $experienceDetail->project_no) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
                 </div>
     
+                <!--<div>-->
+                <!--    <label for="kbli_number" class="block text-sm font-medium text-gray-700">KBLI Number</label>-->
+                <!--    <input type="text" name="kbli_number" id="kbli_number" value="{{ old('kbli_number', $experienceDetail->kbli_number) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>-->
+                <!--</div>-->
+        
+                <!--<div>-->
+                <!--    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>-->
+                <!--    <input type="text" name="status" id="status" value="{{ old('status', $experienceDetail->status) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>-->
+                <!--</div>-->
+                       
+                       
                 <div>
-                    <label for="kbli_number" class="block text-sm font-medium text-gray-700">KBLI Number</label>
-                    <input type="text" name="kbli_number" id="kbli_number" value="{{ old('kbli_number', $experienceDetail->kbli_number) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-                </div>
+    <label for="kbli_number" class="block text-sm font-medium text-gray-700">KBLI Number</label>
+    <select name="kbli_number" id="kbli_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+        <option value="" disabled <?php echo (empty($experienceDetail) ? 'selected' : ''); ?>>Choose KBLI Number</option>
+        <option value="70209 - Management Consulting Activities" <?php echo ($experienceDetail == '70209 - Management Consulting Activities' ? 'selected' : ''); ?>>70209 - Management Consulting Activities</option>
+        <option value="78101 - Domestic Labor Placement and Selection Activities" <?php echo ($experienceDetail == '78101 - Domestic Labor Placement and Selection Activities' ? 'selected' : ''); ?>>78101 - Domestic Labor Placement and Selection Activities</option>
+        <option value="78200 - (Supporting) Temporary Labor Supply Activities" <?php echo ($experienceDetail == '78200 - (Supporting) Temporary Labor Supply Activities' ? 'selected' : ''); ?>>78200 - (Supporting) Temporary Labor Supply Activities</option>
+        <option value="78300 - Human Resource Supply and Human Resource Management Activities" <?php echo ($experienceDetail == '78300 - Human Resource Supply and Human Resource Management Activities' ? 'selected' : ''); ?>>78300 - Human Resource Supply and Human Resource Management Activities</option>
+        <option value="82302 - Special Event Organizer Services" <?php echo ($experienceDetail == '82302 - Special Event Organizer Services' ? 'selected' : ''); ?>>82302 - Special Event Organizer Services</option>
+    </select>
+</div>
+
         
                 <div>
-                    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                    <input type="text" name="status" id="status" value="{{ old('status', $experienceDetail->status) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-                </div>
+    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+    <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+        <option value="" disabled <?php echo (empty($experienceDetail) ? 'selected' : ''); ?>>Choose status</option>
+        <option value="Finish" <?php echo ($experienceDetail == 'Finish' ? 'selected' : ''); ?>>Finish</option>
+        <option value="On Progress" <?php echo ($experienceDetail == 'On Progress' ? 'selected' : ''); ?>>On Progress</option>
+    </select>
+</div>
                        
               
                 <div>
@@ -62,8 +85,8 @@
 
 
 <div>
-    <label for="amount" class="block text-sm font-medium text-gray-700">Location</label>
-    <input type="text" name="amount" id="amount" value="{{ old('amount', $experienceDetail->amount) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+    <label for="amount" class="block text-sm font-medium text-gray-700">Amount Contract</label>
+    <input type="text" name="amount" id="amount" value="{{ old('amount', $experienceDetail->amount) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" >
 </div>
 
 </div>
@@ -107,7 +130,7 @@
            </div>
     
             <div>
-                <label for="scope_of_work" class="block text-sm font-medium text-gray-700">Scope of Work</label>
+                <label for="scope_of_work" class="block text-sm font-medium text-gray-700">Scope of Work (max 3 lines)</label>
                 <textarea name="scope_of_work" id="scope_of_work" value="{{ old('scope_of_work', $experienceDetail->scope_of_work) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required></textarea>
             </div>
     
@@ -120,7 +143,7 @@
             {{-- <div class="kontainer_upload_image grid grid-cols-3 gap-2">
                 <div class="flex" v-for="(image, index) in images" :key='image.id' >
                     <div>
-                        <label for="image" class="block text-sm font-medium text-gray-700" v-text="'image ' + (index + 1)"></label>
+                        <label for="image" class="block text-sm font-medium text-gray-700" v-text="'image (max 6 MB)'"></label>
                         <input @change="previewImage(image.id, $event)" type="file" name="images[]" :id='"image" + (index + 1)' accept="image/*" class="mt-1 block w-80 border-gray-300 rounded-md shadow-sm">
                     </div>       
                     <div class="flex items-center">
@@ -147,7 +170,7 @@
     <!-- Iterasi untuk menampilkan input gambar dan preview -->
     <div class="flex" v-for="(image, index) in images" :key='image.id'>
         <div :id='image.id'>
-            <label for="image" class="block text-sm font-medium text-gray-700" v-text="'Image ' + (index + 1)"></label>
+            <label for="image" class="block text-sm font-medium text-gray-700" v-text="'Image (max 6 MB) ' "></label>
             <!-- Input untuk upload gambar -->
             {{-- <input type="hidden" name="image_id" :value='image.id' :id='image.id'> --}}
             <input 
@@ -191,7 +214,7 @@
     <div v-for="(preview, id) in previews" :key='id'>
         <div class="flex-row">
             <div class="flex justify-center">
-                <h3 v-text="'Image ' + (id + 1)"></h3>
+              
             </div>
             <img :src='preview.path' alt="image preview" class="w-32 h-32 object-cover rounded-md shadow-md mt-3">
         </div>

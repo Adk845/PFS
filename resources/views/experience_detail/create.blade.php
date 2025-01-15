@@ -25,15 +25,39 @@
                 <input type="text" name="project_no" id="project_no" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
             </div>
 
+            <!--<div>-->
+            <!--    <label for="kbli_number" class="block text-sm font-medium text-gray-700">KBLI Number</label>-->
+            <!--    <input type="text" name="kbli_number" id="kbli_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>-->
+            <!--</div>-->
+    
+            <!--<div>-->
+            <!--    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>-->
+            <!--    <input type="text" name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>-->
+            <!--</div>-->
+            
             <div>
-                <label for="kbli_number" class="block text-sm font-medium text-gray-700">KBLI Number</label>
-                <input type="text" name="kbli_number" id="kbli_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-            </div>
+    <label for="kbli_number" class="block text-sm font-medium text-gray-700">KBLI Number</label>
+    <select name="kbli_number" id="kbli_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+        <option value="" disabled selected>Choose KBLI Number</option>
+        <option value="70209 - Management Consulting Activities">70209 - Management Consulting Activities</option>
+        <option value="78101 - Domestic Labor Placement and Selection Activities">78101 - Domestic Labor Placement and Selection Activities</option>
+        <option value="78200 - (Supporting) Temporary Labor Supply Activities">78200 - (Supporting) Temporary Labor Supply Activities</option>
+        <option value="78300 - Human Resource Supply and Human Resource Management Activities">78300 - Human Resource Supply and Human Resource Management Activities</option>
+        <option value="82302 - Special Event Organizer Services">82302 - Special Event Organizer Services</option>
+    </select>
+</div>
+
+
+
     
             <div>
-                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                <input type="text" name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
-            </div>
+    <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+    <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+        <option value="" disabled selected>Choose status</option>
+        <option value="Finish">Finish</option>
+        <option value="On Progress">On Progress</option>
+    </select>
+</div>
     
            
           
@@ -61,7 +85,7 @@
 
 <div>
                 <label for="amount" class="block text-sm font-medium text-gray-700">Amount Contract</label>
-                <input type="text" name="amount" id="amount" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                <input type="text" name="amount" id="amount" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
             </div>
 
 </div>
@@ -89,7 +113,7 @@
        </div>
 
         <div>
-            <label for="scope_of_work" class="block text-sm font-medium text-gray-700">Scope of Work</label>
+            <label for="scope_of_work" class="block text-sm font-medium text-gray-700">Scope of Work (max 3 lines)</label>
             <textarea name="scope_of_work" id="scope_of_work" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required></textarea>
         </div>
 
@@ -97,7 +121,7 @@
         <div class="kontainer_upload_image grid grid-cols-3 gap-2">
             <div class="flex" v-for="(image, index) in images" :key='image.id' >
                 <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700" v-text="'image ' + (index + 1)"></label>
+                    <label for="image" class="block text-sm font-medium text-gray-700" v-text="'image (max 6 MB) ' "></label>
                     <input @change="previewImage(image.id, $event)" type="file" name="images[]" :id='"image" + (index + 1)' accept="image/*" class="mt-1 block w-80 border-gray-300 rounded-md shadow-sm">
                 </div>       
                 <div class="flex items-center">

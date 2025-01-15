@@ -123,17 +123,17 @@
         <td ><div  style="width: 430px">{{$experiences->client_name}}</div></td>                    
     </tr>
 
-    <tr>
-        <td>Durations (Month)</td>
-        <td >:</td>
-        <td ><div  style="width: 430px">{{$experiences->durations}}</div></td>
+    <!--<tr>-->
+    <!--    <td>Durations (Month)</td>-->
+    <!--    <td >:</td>-->
+    <!--    <td ><div  style="width: 430px">{{$experiences->durations}}</div></td>-->
         
-    </tr>
+    <!--</tr>-->
 
     <tr>
         <td></td>
         <td ></td>
-        <td ><strong> Date Start : </strong> {{$experiences->date_project_start}} <strong> Date End : </strong> {{$experiences->date_project_end}}</td>                    
+        <td > Date Start : {{$experiences->date_project_start}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Date End :  {{$experiences->date_project_end}}</td>                    
     </tr>
 
     <tr>

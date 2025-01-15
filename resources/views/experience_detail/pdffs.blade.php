@@ -13,7 +13,7 @@
             background-repeat: no-repeat;
             height: 100vh;  
             width: 100%;    
-            font-size: 18px;
+            font-size: 14px;
         }
 
         .content {
@@ -23,7 +23,7 @@
 
         @page {
             size: A4;
-            margin: 0;
+            margin: 15px;
         }
 
         .container_konten {
@@ -34,8 +34,8 @@
         }
 
         .letak{
-            margin-top: 170px;
-            margin-left: 70px;
+            margin-top: 140px;
+            margin-left: 90px;
             margin-bottom: 40px;
         }
 
@@ -67,7 +67,7 @@
 
             vertical-align: top;
         }
-        .bagian_gambar{
+        /* .bagian_gambar{
             width: 75%;
             height: 500px;
             margin-left: 55px;
@@ -86,12 +86,49 @@
         .gambar_sisa{
             width: 100%;
             height: 240px;
-        }
+        } */
+         
+.bagian_gambar {
+    width: 75%;
+    height: 500px;
+    margin-left: 55px;
+    position: absolute;
+    bottom: 80px;
+    
+    left: 40px;
+
+}
+.table_gambar {
+    width: 100%;
+}
+.gambar_pertama, .gambar_kedua, .gambar_sisa {
+    width: 100%;
+    height: 240px;
+}
+.gambar_full {
+    width: 100%;
+    height: 400px; 
+    /* margin-left: 80px; */
+
+}
+
+.gambar_half {
+    width: 100%;
+    height: 500px; 
+}
+.td_full {
+    text-align: center;
+    padding: 0;
+}
+.td_half {
+    width: 50%;
+    padding: 0;
+}
         .td_sisa{
             width: 33%;
         }
     </style>
-    <title>Document</title>
+    <title>Factsheet</title>
    
 </head>
 <body>
@@ -150,7 +187,7 @@
     <tr>
         <td><b>Date</b></td>
         <td >:</td>
-        <td ><strong>Start : </strong> {{$experiences->date_project_start}} <strong>End : </strong> {{$experiences->date_project_end}}</td>                    
+        <td ><strong>Start : </strong> {{$experiences->date_project_start}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong> &nbsp; End : </strong> {{$experiences->date_project_end}}</td>                    
     </tr>
 
     <tr>
@@ -172,7 +209,7 @@
     </tr>
 </table>
 
-<div class="bagian_gambar">
+{{--<div class="bagian_gambar">
     <table class="table_gambar">
         <tr>
             <td colspan="2" class="td_1" >
@@ -195,7 +232,92 @@
         </tr>
     </table>
 
+</div>--}}
+
+
+
+
+<div class="bagian_gambar">
+    @if(isset($images[0]) && file_exists(public_path('storage/' . $images[0]->foto)))
+        <table class="table_gambar">
+            @if(count($images) == 1)
+                <tr>
+                    <td colspan="3" class="td_full">
+                        <img class="gambar_full" src="{{ public_path('storage/' . $images[0]->foto) }}" alt="Image 1">
+                    </td>
+                </tr>
+            @elseif(count($images) == 2)
+                <tr>
+                    <td colspan="4" class="td_1">
+                        <img class="gambar_pertama" src="{{ public_path('storage/' . $images[0]->foto) }}" alt="Image 1">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="td_sisa">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[1]->foto) }}" alt="Image 2">
+                    </td>
+                </tr>
+
+            @elseif(count($images) == 3)
+                <tr>
+                    <td colspan="4" class="td_1">
+                        <img class="gambar_pertama" src="{{ public_path('storage/' . $images[0]->foto) }}" alt="Image 1">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="td_sisa">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[1]->foto) }}" alt="Image 2">
+                    </td>
+                    <td colspan="2" class="td_sisa">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[2]->foto) }}" alt="Image ">
+                    </td>
+                </tr>
+
+                @elseif(count($images) == 4)
+                <tr>
+                    <td colspan="4" class="td_1">
+                        <img class="gambar_pertama" src="{{ public_path('storage/' . $images[0]->foto) }}" alt="Image 1">
+                    </td>
+                    <td colspan="2" class="td_sisa">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[1]->foto) }}" alt="Image 2">
+                    </td>
+                      
+                </tr>
+                <tr>
+                    <td colspan="3" class="td_sisa">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[2]->foto) }}" alt="Image 3">
+                    </td>
+                    <td class="td_sisa" colspan="3">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[3]->foto) }}" alt="Image 4">
+                    </td>
+                </tr>
+            @else
+                <tr>
+                    <td colspan="2" class="td_1">
+                        <img class="gambar_pertama" src="{{ public_path('storage/' . $images[0]->foto) }}" alt="Image 1">
+                    </td>
+                    <td colspan="1" class="td_2">
+                        <img class="gambar_kedua" src="{{ public_path('storage/' . $images[1]->foto) }}" alt="Image 2">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="td_sisa" colspan="1">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[2]->foto) }}" alt="Image 3">
+                    </td>
+                    <td class="td_sisa" colspan="1">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[3]->foto) }}" alt="Image 4">
+                    </td>
+                    <td class="td_sisa" colspan="1">
+                        <img class="gambar_sisa" src="{{ public_path('storage/' . $images[4]->foto) }}" alt="Image 5">
+                    </td>
+                </tr>
+            @endif
+        </table>
+    @else
+        <p>Gambar tidak tersedia</p>
+    @endif
 </div>
+
 
 {{-- <table>
     <tr>

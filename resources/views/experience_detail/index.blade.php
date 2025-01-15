@@ -10,6 +10,8 @@
         
         <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Create New Experience</a>
 
+<div class="flex items-center">
+        
         <form method="GET" action="{{ route('experiences.index') }}" class="flex items-center">
             <div class="w-64 relative mr-2"> <!-- Perpanjang dengan w-64 -->
                 <input type="text" name="search" id="search" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10" value="{{ request('search') }}" placeholder="Search...">
@@ -37,38 +39,67 @@
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Apply</button>
         </form>
 
-            <div class="d-flex dropdown relative">
-    <!-- Dropdown Toggle Button -->
-    <button class="dropdown-toggle bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ml-4 w-full md:w-auto" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-        Actions
-    </button>
+    <div class="dropdown ml-2">
+        <!-- Dropdown Toggle Button -->
+        <button class="dropdown-toggle bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ml-4 w-full md:w-auto" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            Actions
+        </button>
 
-    <!-- Dropdown Menu -->
-    <ul class="dropdown-menu w-full min-w-[200px] mt-2 shadow-lg rounded-md bg-white ring-1 ring-gray-200 z-10" aria-labelledby="dropdownMenuButton">
-        <!-- Download All Button -->
-        <li>
-            <a href="{{ route('experiences.pdfAll', ['search' => request('search'), 'category' => request('category')]) }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Download All</a>
-        </li>
+        <!-- Dropdown Menu -->
+        <ul class="dropdown-menu w-full min-w-[200px] mt-2 shadow-lg rounded-md bg-white ring-1 ring-gray-200 z-10" aria-labelledby="dropdownMenuButton">
+            <!-- Download All Button -->
+            <li>
+                <a href="{{ route('experiences.pdfAll', ['search' => request('search'), 'category' => request('category')]) }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Download All</a>
+            </li>
 
-        <!-- Export Projects -->
-        <li>
-            <a href="{{ route('experiences.export') }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Export Pfs</a>
-        </li>
+            <!-- Export Projects -->
+            <li>
+                <a href="{{ route('experiences.export') }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Export Pfs</a>
+            </li>
+        </ul>
+    </div>
 
-        <!-- Import Form -->
-        <li>
-            <div class="px-4 py-2">
-                <form action="{{ route('experiences.import') }}" method="POST" enctype="multipart/form-data">
+    <div class="ml-2">
+        <button type="button" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition" data-bs-toggle="modal" data-bs-target="#importModal">
+            Import
+        </button>
+
+        <!-- Modal untuk meng-upload file -->
+        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">Upload File</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('experiences.import') }}" method="POST" enctype="multipart/form-data" id="importForm">
                     @csrf
                     <div class="mb-3">
-                        <label for="file" class="form-label text-sm text-gray-700">Upload File</label>
+                        <label for="file" class="form-label text-sm text-gray-700">Select File</label>
                         <input type="file" id="file" name="file" class="form-control mt-1 block w-full text-sm text-gray-700" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-sm mt-3 w-full">Import</button>
-                </form>
+                    <button type="submit" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition w-full">Import</button>
+                    </form>
+                </div>
+                </div>
             </div>
-        </li>
-    </ul>
+            </div>
+
+            <!-- Success Toast Notification -->
+            <div class="toast-container position-fixed bottom-0 end-0 p-3" id="successToast">
+                <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            File berhasil diimport!
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
 </div>
 
 
@@ -115,9 +146,12 @@
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->locations }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->scope_of_work }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->status }}</td>
-                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->amount }}</td>
+                        <td class="px-6 py-3 text-sm">Rp.{{ $experienceDetail->amount }}</td>
+                   
 
-                        <td class="px-6 py-3 text-sm grid grid-cols-3">
+
+
+                        <td class="">
                             @foreach($experienceDetail->images as $image)
                                 <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
                             @endforeach
@@ -138,13 +172,14 @@
                                     <x-dropdown-link :href="route('experiences.edit', $experienceDetail->id)">
                                        Edit
                                     </x-dropdown-link>
-                                    <x-dropdown-link :href="route('experiences.pdffs', $experienceDetail->id)">
-                                       Download FactSheet
+                                    <x-dropdown-link :href="route('experiences.pdffs', $experienceDetail->id)" target="_blank">
+                                        Download FactSheet
+                                    </x-dropdown-link>
+                                    
+                                    <x-dropdown-link :href="route('experiences.bast', $experienceDetail->id)" target="_blank">
+                                        Download BAST
                                     </x-dropdown-link>
 
-                                    <x-dropdown-link :href="route('experiences.bast', $experienceDetail->id)">
-                                       Download BAST
-                                    </x-dropdown-link>
                                     <form method="POST" action="{{ route('experiences.destroy', $experienceDetail->id) }}">
                                         @csrf
                                         @method('DELETE')
