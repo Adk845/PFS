@@ -40,7 +40,7 @@
 
         .judul p {
             margin-top: 0; 
-            font-size: 12px;
+            font-size: 15px;
         }
 
         .letak {
@@ -67,7 +67,7 @@
             vertical-align: middle; 
         }
         table.ttd tr:nth-child(2) td {
-            height: 85px;
+            height: 140px;
         }
         table.ttd tr:nth-child(3) td {
             height: 15px;
@@ -123,6 +123,22 @@
         <td ><div  style="width: 430px">{{$experiences->client_name}}</div></td>                    
     </tr>
 
+    <tr>
+                <td>Date Start</td>
+                <td>:</td>
+                <td>
+                    <div style="width: 430px"> {{ date('d F Y', strtotime($experiences->date_project_start)) }}</div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Date End</td>
+                <td>:</td>
+                <td>
+                    <div style="width: 430px">{{ date('d F Y', strtotime($experiences->date_project_end)) }}</div>
+                </td>
+            </tr>
+
     <!--<tr>-->
     <!--    <td>Durations (Month)</td>-->
     <!--    <td >:</td>-->
@@ -130,11 +146,11 @@
         
     <!--</tr>-->
 
-    <tr>
+    <!-- <tr>
         <td></td>
         <td ></td>
         <td > Date Start : {{$experiences->date_project_start}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  Date End :  {{$experiences->date_project_end}}</td>                    
-    </tr>
+    </tr> -->
 
     <tr>
         <td>Area/Locations</td>
@@ -187,10 +203,10 @@
         <td></td>
     </tr>
 
-    <tr>
+    <!-- <tr>
         <td></td>
         <td></td>
-    </tr>
+    </tr> -->
 </table>
 
 </div>
