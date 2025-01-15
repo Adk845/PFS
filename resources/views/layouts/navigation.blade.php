@@ -9,13 +9,23 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-white dark:text-gray-200" />
                     </a>
                 </div>
-                
+                <div class="flex-1 flex justify-end items-center" style="margin-left: 50px; color: white;">
+                    @if(request()->routeIs('experiences.create') || request()->routeIs('experiences.edit'))
+                    <a href="{{ route('experiences.index') }}" class="text-blue-600 flex items-center">
+                        <i class="fas fa-home mr-2"></i> Home
+                    </a>
+                    @endif
+                </div>
 
-               
+
+
+
+
+
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-  
-</div>
+
+                </div>
 
 
             </div>
@@ -45,7 +55,7 @@
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
+                                onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
@@ -91,7 +101,7 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>

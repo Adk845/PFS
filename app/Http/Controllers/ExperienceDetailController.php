@@ -86,6 +86,8 @@ class ExperienceDetailController extends Controller
                 return $query->where('category', $category);
             })
             ->paginate(10);  // Adjust pagination as needed
+
+            
     
         return view('experience_detail.index', compact('experiences'));
     }
