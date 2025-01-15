@@ -77,29 +77,25 @@ class ExperienceDetailController extends Controller
         $search = $request->input('search');
         $category = $request->input('category');
         $paginate = $request->input('pagination');
-        // if(isset($request->pagination)){
-        //     dd($paginate);
-        // }
-        // if(isset($request->asc)){
-        //     $orderDirection = 'asc';
-        // } elseif(isset($request->desc)){
-        //     $orderDirection = 'desc';
-        // }
+        
     
-        $experiences = ExperienceDetail::query()
+        $experiences_query = ExperienceDetail::query()
             ->when($search, function($query, $search) {
                 return $query->where('project_name', 'like', "%{$search}%")
                              ->orWhere('client_name', 'like', "%{$search}%");
             })
             ->when($category, function($query, $category) {
                 return $query->where('category', $category);
-            })->paginate($paginate);  // Adjust pagination as needed
-    
-            $experiences->appends($request->all());
-            // if(isset($request->category)){
-            //     $experiences->appends($request->all());
-            //     return($experiences);
-            // }
+            });  // Adjust pagination as needed
+
+            if($paginate === 'all') {
+                $experiences = $experiences_query->get();
+            } else {
+                $experiences = $experiences_query->paginate((int) $paginate);
+                $experiences->appends($request->all());
+            }
+
+            // return($experiences);
         return view('experience_detail.index', compact('experiences'));
     }
 
