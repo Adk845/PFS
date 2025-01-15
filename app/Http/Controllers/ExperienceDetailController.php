@@ -77,6 +77,10 @@ class ExperienceDetailController extends Controller
         $search = $request->input('search');
         $category = $request->input('category');
         $paginate = $request->input('pagination');
+        $validColumns = ['project_no', 'project_name', 'client_name', 'date_project_start']; 
+        $sortBy = in_array($request->input('sortBy'), $validColumns) ? $request->input('sortBy') : 'project_no'; 
+        $order = $request->input('order', 'asc'); 
+    
         
     
         $experiences_query = ExperienceDetail::query()
@@ -86,7 +90,7 @@ class ExperienceDetailController extends Controller
             })
             ->when($category, function($query, $category) {
                 return $query->where('category', $category);
-            });  // Adjust pagination as needed
+            }) ->orderBy($sortBy, $order);  
 
             if($paginate === 'all') {
                 $experiences = $experiences_query->get();

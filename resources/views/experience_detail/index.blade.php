@@ -5,152 +5,225 @@
         </h2>
     </x-slot>
 
+    <style>
+        .sort-indicator {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            margin-left: 5px;
+        }
+
+        .sort-indicator.asc {
+            border-bottom: 6px solid black;
+        }
+
+        .sort-indicator.desc {
+            border-top: 6px solid black;
+        }
+
+        .sort-indicator.default {
+            border-top: 6px solid gray;
+            opacity: 0.5;
+        }
+    </style>
+
     <div class="px-6 py-2">
-    <div class="flex justify-between items-center mt-10">
-        
-        <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Create New Experience</a>
+        <div class="flex justify-between items-center mt-10">
 
-<div class="flex items-center">
-        
-        <form method="GET" action="{{ route('experiences.index') }}" class="flex items-center">
-            <div class="w-64 relative mr-2"> <!-- Perpanjang dengan w-64 -->
-                <input type="text" name="search" id="search" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10" value="{{ request('search') }}" placeholder="Search...">
-                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600">
-                    <i class="fa fa-search"></i> <!-- Gunakan ikon pencarian Font Awesome -->
-                </button>
-            </div>
+            <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Create New Experience</a>
 
-            <div class="w-40 mr-2"> <!-- Perpanjang dengan w-64 -->
-                <select name="pagination" id="pagination" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    <option value="" {{ !request('pagination') ? 'selected' : '' }}>Pagination</option>
-                    <option value="10" {{ request('pagination') == '10' ? 'selected' : '' }}>10</option>
-                    <option value="50" {{ request('pagination') == '50' ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ request('pagination') == '100' ? 'selected' : '' }}>100</option>
-                    <option value="all" {{ request('pagination') == 'all' ? 'selected' : '' }}>All</option>
-                </select>
-            </div>
+            <div class="flex items-center">
 
-            <div class="w-64 mr-2"> <!-- Perpanjang dengan w-64 -->
-                <select name="category" id="category" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                    <option value="" {{ !request('category') ? 'selected' : '' }}>Category</option>
-                    <option value="" {{ request('category') == 'all' ? 'selected' : '' }}>All</option>
-                    <option value="Travel Arrangement" {{ request('category') == 'Travel Arrangement' ? 'selected' : '' }}>Travel Arrangement</option>
-                    <option value="Marchandise/ATK" {{ request('category') == 'Marchandise/ATK' ? 'selected' : '' }}>Marchandise/ATK</option>
-                    <option value="Business Development" {{ request('category') == 'Business Development' ? 'selected' : '' }}>Business Development</option>
-                    <option value="IT" {{ request('category') == 'IT' ? 'selected' : '' }}>IT</option>
-                    <option value="Manpower Supply" {{ request('category') == 'Manpower Supply' ? 'selected' : '' }}>Manpower Supply</option>
-                    <option value="Event Organizer" {{ request('category') == 'Event Organizer' ? 'selected' : '' }}>Event Organizer</option>
-                    <option value="Printing" {{ request('category') == 'Printing' ? 'selected' : '' }}>Printing</option>
-                    <option value="Car Rental" {{ request('category') == 'Car Rental' ? 'selected' : '' }}>Car Rental</option>
-                    <option value="Company Loan" {{ request('category') == 'Company Loan' ? 'selected' : '' }}>Company Loan</option>
-                    <option value="Rent Building" {{ request('category') == 'Rent Building' ? 'selected' : '' }}>Rent Building</option>
-                </select>
-            </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Apply</button>
-        </form>
-
-    <div class="dropdown ml-2">
-        <!-- Dropdown Toggle Button -->
-        <button class="dropdown-toggle bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ml-4 w-full md:w-auto" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-            Actions
-        </button>
-
-        <!-- Dropdown Menu -->
-        <ul class="dropdown-menu w-full min-w-[200px] mt-2 shadow-lg rounded-md bg-white ring-1 ring-gray-200 z-10" aria-labelledby="dropdownMenuButton">
-            <!-- Download All Button -->
-            <li>
-                <a href="{{ route('experiences.pdfAll', ['search' => request('search'), 'category' => request('category')]) }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Download All</a>
-            </li>
-
-            <!-- Export Projects -->
-            <li>
-                <a href="{{ route('experiences.export') }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Export Pfs</a>
-            </li>
-        </ul>
-    </div>
-
-    <div class="ml-2">
-        <button type="button" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition" data-bs-toggle="modal" data-bs-target="#importModal">
-            Import
-        </button>
-
-        <!-- Modal untuk meng-upload file -->
-        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="importModalLabel">Upload File</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('experiences.import') }}" method="POST" enctype="multipart/form-data" id="importForm">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="file" class="form-label text-sm text-gray-700">Select File</label>
-                        <input type="file" id="file" name="file" class="form-control mt-1 block w-full text-sm text-gray-700" required>
+                <form method="GET" action="{{ route('experiences.index') }}" class="flex items-center">
+                    <div class="w-64 relative mr-2"> <!-- Perpanjang dengan w-64 -->
+                        <input type="text" name="search" id="search" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10" value="{{ request('search') }}" placeholder="Search...">
+                        <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600">
+                            <i class="fa fa-search"></i> <!-- Gunakan ikon pencarian Font Awesome -->
+                        </button>
                     </div>
-                    <button type="submit" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition w-full">Import</button>
-                    </form>
-                </div>
-                </div>
-            </div>
-            </div>
 
-            <!-- Success Toast Notification -->
-            <div class="toast-container position-fixed bottom-0 end-0 p-3" id="successToast">
-                <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            File berhasil diimport!
+                    <div class="w-40 mr-2"> <!-- Perpanjang dengan w-64 -->
+                        <select name="pagination" id="pagination" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="" {{ !request('pagination') ? 'selected' : '' }}>Pagination</option>
+                            <option value="10" {{ request('pagination') == '10' ? 'selected' : '' }}>10</option>
+                            <option value="50" {{ request('pagination') == '50' ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('pagination') == '100' ? 'selected' : '' }}>100</option>
+                            <option value="all" {{ request('pagination') == 'all' ? 'selected' : '' }}>All</option>
+                        </select>
+                    </div>
+
+                    <div class="w-64 mr-2"> <!-- Perpanjang dengan w-64 -->
+                        <select name="category" id="category" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="" {{ !request('category') ? 'selected' : '' }}>Category</option>
+                            <option value="" {{ request('category') == 'all' ? 'selected' : '' }}>All</option>
+                            <option value="Travel Arrangement" {{ request('category') == 'Travel Arrangement' ? 'selected' : '' }}>Travel Arrangement</option>
+                            <option value="Marchandise/ATK" {{ request('category') == 'Marchandise/ATK' ? 'selected' : '' }}>Marchandise/ATK</option>
+                            <option value="Business Development" {{ request('category') == 'Business Development' ? 'selected' : '' }}>Business Development</option>
+                            <option value="IT" {{ request('category') == 'IT' ? 'selected' : '' }}>IT</option>
+                            <option value="Manpower Supply" {{ request('category') == 'Manpower Supply' ? 'selected' : '' }}>Manpower Supply</option>
+                            <option value="Event Organizer" {{ request('category') == 'Event Organizer' ? 'selected' : '' }}>Event Organizer</option>
+                            <option value="Printing" {{ request('category') == 'Printing' ? 'selected' : '' }}>Printing</option>
+                            <option value="Car Rental" {{ request('category') == 'Car Rental' ? 'selected' : '' }}>Car Rental</option>
+                            <option value="Company Loan" {{ request('category') == 'Company Loan' ? 'selected' : '' }}>Company Loan</option>
+                            <option value="Rent Building" {{ request('category') == 'Rent Building' ? 'selected' : '' }}>Rent Building</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Apply</button>
+                </form>
+
+                <div class="dropdown ml-2">
+                    <!-- Dropdown Toggle Button -->
+                    <button class="dropdown-toggle bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ml-4 w-full md:w-auto" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Actions
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <ul class="dropdown-menu w-full min-w-[200px] mt-2 shadow-lg rounded-md bg-white ring-1 ring-gray-200 z-10" aria-labelledby="dropdownMenuButton">
+                        <!-- Download All Button -->
+                        <li>
+                            <a href="{{ route('experiences.pdfAll', ['search' => request('search'), 'category' => request('category')]) }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Download All</a>
+                        </li>
+
+                        <!-- Export Projects -->
+                        <li>
+                            <a href="{{ route('experiences.export') }}" class="dropdown-item px-4 py-2 text-gray-700 hover:bg-gray-100">Export Pfs</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="ml-2">
+                    <button type="button" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition" data-bs-toggle="modal" data-bs-target="#importModal">
+                        Import
+                    </button>
+
+                    <!-- Modal untuk meng-upload file -->
+                    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="importModalLabel">Upload File</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('experiences.import') }}" method="POST" enctype="multipart/form-data" id="importForm">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label for="file" class="form-label text-sm text-gray-700">Select File</label>
+                                            <input type="file" id="file" name="file" class="form-control mt-1 block w-full text-sm text-gray-700" required>
+                                        </div>
+                                        <button type="submit" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition w-full">Import</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
+
+                    <!-- Success Toast Notification -->
+                    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="successToast">
+                        <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    File berhasil diimport!
+                                </div>
+                                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
 
+
+
+        </div>
     </div>
 
-</div>
+    @if ($experiences instanceof \Illuminate\Pagination\LengthAwarePaginator || $experiences instanceof \Illuminate\Pagination\Paginator)
 
-
-        
+    <div class="w-56  py-2 px-6">
+        <p class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">
+            Page : {{ $experiences->currentpage() }} from {{ $experiences->lastpage() }}
+        </p>
     </div>
-</div>
 
-@if ($experiences instanceof \Illuminate\Pagination\LengthAwarePaginator || $experiences instanceof \Illuminate\Pagination\Paginator)
+    @endif
 
-<div class="w-56  py-2 px-6">
-    <p class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">
-        Page : {{ $experiences->currentpage() }} from {{ $experiences->lastpage() }}
-    </p>
-</div>
-    
-@endif
-
-<div class="w-full mx-auto py-2 px-6">
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table class="min-w-full table-auto ">
-            <thead class="bg-gray-200 ">
-                <tr>
-                    {{-- <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th> --}}
+    <div class="w-full mx-auto py-2 px-6">
+        <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+            <table class="min-w-full table-auto ">
+                <thead class="bg-gray-200 ">
+                    <tr>
+                        <!-- <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">No.</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project No</th>
                     <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Project Name</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Client Name</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">KBLI number</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Category</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Durations</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Period</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Locations</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Scope of Work</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Amount Contract</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Client Name</th> -->
+                        <!-- <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=no&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}" class="flex items-center">
+                                No.
+                                <span class="ml-2">
+                                    <span class="sort-indicator {{ request('sortBy') == 'no' && request('order') == 'asc' ? 'asc' : '' }} {{ request('sortBy') == 'no' && request('order') == 'desc' ? 'desc' : '' }} {{ request('sortBy') != 'no' ? 'default' : '' }}"></span>
+                                </span>
+                            </a>
+                        </th> -->
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=project_no&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}&page={{ request('page') }}"" class="flex items-center">
+                                Project No
+                                <span class="ml-2">
+                                    <span class="sort-indicator {{ request('sortBy') == 'project_no' && request('order') == 'asc' ? 'asc' : '' }} {{ request('sortBy') == 'project_no' && request('order') == 'desc' ? 'desc' : '' }} {{ request('sortBy') != 'project_no' ? 'default' : '' }}"></span>
+                                </span>
+                            </a>
+                        </th>
 
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Images</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y">
-                @foreach($experiences as $experienceDetail)
+
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=project_name&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                                Project Name
+                                <span class="ml-2">
+                                    <span class="sort-indicator {{ request('sortBy') == 'project_name' && request('order') == 'asc' ? 'asc' : '' }} {{ request('sortBy') == 'project_name' && request('order') == 'desc' ? 'desc' : '' }} {{ request('sortBy') != 'project_name' ? 'default' : '' }}"></span>
+                                </span>
+                            </a>
+                        </th>
+
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=client_name&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                                Client Name
+                                <span class="ml-2">
+                                    <span class="sort-indicator {{ request('sortBy') == 'client_name' && request('order') == 'asc' ? 'asc' : '' }} {{ request('sortBy') == 'client_name' && request('order') == 'desc' ? 'desc' : '' }} {{ request('sortBy') != 'client_name' ? 'default' : '' }}"></span>
+                                </span>
+                            </a>
+                        </th>
+
+
+
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">KBLI number</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Category</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Durations</th>
+                        <!-- <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Period</th> -->
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=date_project_start&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                                Period
+                                <span class="ml-2">
+                                    <span class="sort-indicator {{ request('sortBy') == 'date_project_start' && request('order') == 'asc' ? 'asc' : '' }} {{ request('sortBy') == 'date_project_start' && request('order') == 'desc' ? 'desc' : '' }} {{ request('sortBy') != 'date_project_start' ? 'default' : '' }}"></span>
+                                </span>
+                            </a>
+                        </th>
+
+
+
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Locations</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Scope of Work</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Amount Contract</th>
+
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Images</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                    @foreach($experiences as $experienceDetail)
                     <tr>
                         {{-- <td class="px-6 py-3 text-sm">{{ $loop->iteration }}</td> --}}
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_no }}</td>
@@ -164,13 +237,13 @@
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->scope_of_work }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->status }}</td>
                         <td class="px-6 py-3 text-sm">Rp.{{ $experienceDetail->amount }}</td>
-                   
+
 
 
 
                         <td class="">
                             @foreach($experienceDetail->images as $image)
-                                <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
+                            <img src="{{ Storage::url($image->foto) }}" alt="Image" class="w-20 h-20 object-cover rounded-md mb-2">
                             @endforeach
                         </td>
                         <td class="px-6 py-3 text-sm">
@@ -187,12 +260,12 @@
                                 </x-slot>
                                 <x-slot name="content">
                                     <x-dropdown-link :href="route('experiences.edit', $experienceDetail->id)">
-                                       Edit
+                                        Edit
                                     </x-dropdown-link>
                                     <x-dropdown-link :href="route('experiences.pdffs', $experienceDetail->id)" target="_blank">
                                         Download FactSheet
                                     </x-dropdown-link>
-                                    
+
                                     <x-dropdown-link :href="route('experiences.bast', $experienceDetail->id)" target="_blank">
                                         Download BAST
                                     </x-dropdown-link>
@@ -208,17 +281,17 @@
                             </x-dropdown>
                         </td>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
 
-<!-- Pagination -->
-@if ($experiences instanceof \Illuminate\Pagination\LengthAwarePaginator || $experiences instanceof \Illuminate\Pagination\Paginator)
-{{ $experiences->links() }}    
-@endif
+    <!-- Pagination -->
+    @if ($experiences instanceof \Illuminate\Pagination\LengthAwarePaginator || $experiences instanceof \Illuminate\Pagination\Paginator)
+    {{ $experiences->links() }}
+    @endif
 
 
     </div>
