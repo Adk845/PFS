@@ -69,16 +69,18 @@
     <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
     <select name="category" id="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
         <option value="" disabled {{ old('category', $category) == '' ? 'selected' : '' }}>Choose category</option>
-        <option value="Travel Arrangement" {{ old('category', $category) == 'Travel Arrangement' ? 'selected' : '' }}>Travel Arrangement (Flight and Accommodations)</option>
-        <option value="Marchandise/ATK" {{ old('category', $category) == 'Marchandise/ATK' ? 'selected' : '' }}>Marchandise/ATK</option>
-        <option value="Business Development" {{ old('category', $category) == 'Business Development' ? 'selected' : '' }}>Business Development</option>
-        <option value="IT" {{ old('category', $category) == 'IT' ? 'selected' : '' }}>IT</option>
-        <option value="Manpower Supply" {{ old('category', $category) == 'Manpower Supply' ? 'selected' : '' }}>Manpower Supply</option>
-        <option value="Event Organizer" {{ old('category', $category) == 'Event Organizer' ? 'selected' : '' }}>Event Organizer</option>
-        <option value="Printing" {{ old('category', $category) == 'Printing' ? 'selected' : '' }}>Printing</option>
-        <option value="Car Rental" {{ old('category', $category) == 'Car Rental' ? 'selected' : '' }}>Car Rental</option>
-        <option value="Company Loan" {{ old('category', $category) == 'Company Loan' ? 'selected' : '' }}>Company Loan</option>
-        <option value="Rent Building" {{ old('category', $category) == 'Rent Building' ? 'selected' : '' }}>Rent Building</option>
+        <option value="801 Travel Arrangement" {{ old('category', $category) == '801 Travel Arrangement' ? 'selected' : '' }}>801 Travel Arrangement (Flight and Accommodations)</option>
+        <option value="802 Marchandise/ATK" {{ old('category', $category) == '802 Marchandise/ATK' ? 'selected' : '' }}>802 Marchandise/ATK</option>
+        <option value="803 Business Development" {{ old('category', $category) == '803 Business Development' ? 'selected' : '' }}>803 Business Development</option>
+        <option value="803 Manpower Supply" {{ old('category', $category) == '803 Manpower Supply' ? 'selected' : '' }}>803 Manpower Supply</option>
+        <option value="804 IT" {{ old('category', $category) == '804 IT' ? 'selected' : '' }}>804 IT</option>
+        <option value="806 Event Organizer" {{ old('category', $category) == '806 Event Organizer' ? 'selected' : '' }}>806 Event Organizer</option>
+        <option value="807 Printing" {{ old('category', $category) == '807 Printing' ? 'selected' : '' }}>807 Printing</option>
+        <option value="808 Car Rental" {{ old('category', $category) == '808 Car Rental' ? 'selected' : '' }}>808 Car Rental</option>
+        <option value="809 Company Loan" {{ old('category', $category) == '809 Company Loan' ? 'selected' : '' }}>809 Company Loan</option>
+        <option value="809 Moving Office" {{ old('category', $category) == '809 Moving Office' ? 'selected' : '' }}>809 Moving Office</option>
+        <option value="809 Others" {{ old('category', $category) == '809 Others' ? 'selected' : '' }}>809 Others</option>
+        <option value="810 Rent Building" {{ old('category', $category) == '810 Rent Building' ? 'selected' : '' }}>810 Rent Building</option>
     </select>
 </div>
 
