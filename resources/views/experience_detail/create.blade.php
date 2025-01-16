@@ -70,16 +70,18 @@
     <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
     <select name="category" id="category" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
         <option value="" disabled selected>Choose category</option>
-        <option value="Travel Arrangement">Travel Arrangement (Flight and Accommodations)</option>
-        <option value="Marchandise/ATK">Marchandise/ATK</option>
-        <option value="Business Development">Business Development</option>
-        <option value="IT">IT</option>
-        <option value="Manpower Supply">Manpower Supply</option>
-        <option value="Event Organizer">Event Organizer</option>
-        <option value="Printing">Printing</option>
-        <option value="Car Rental">Car Rental</option>
-        <option value="Company Loan">Company Loan</option>
-        <option value="Rent Building">Rent Building</option>
+        <option value="801 Travel Arrangement">801 Travel Arrangement (Flight and Accommodations)</option>
+        <option value="802 Merchandise/ATK">802 Merchandise/ATK</option>
+        <option value="803 Business Development">803 Business Development</option>
+        <option value="803 Manpower Supply">803 Manpower Supply</option>
+        <option value="804 IT">804 IT</option>        
+        <option value="806 Event Organizer">806 Event Organizer</option>
+        <option value="807 Printing">807 Printing</option>
+        <option value="808 Car Rental">808 Car Rental</option>
+        <option value="809 Company Loan">809 Company Loan</option>
+        <option value="809 Moving Office">809 Moving Office</option>
+        <option value="809 Others">809 Others</option>
+        <option value="810 Rent Building">810 Rent Building</option>
     </select>
 </div>
 

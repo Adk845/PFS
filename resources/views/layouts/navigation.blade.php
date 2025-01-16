@@ -11,7 +11,7 @@
                 </div>
                 <div class="flex-1 flex justify-end items-center" style="margin-left: 50px; color: white;">
                     @if(request()->routeIs('experiences.create') || request()->routeIs('experiences.edit'))
-                    <a href="{{ route('experiences.index') }}" class="text-blue-600 flex items-center">
+                    <a href="{{ route('experiences.index') }}" class="text-white flex items-center">
                         <i class="fas fa-home mr-2"></i> Home
                     </a>
                     @endif

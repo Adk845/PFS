@@ -58,16 +58,18 @@
                         <select name="category" id="category" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
                             <option value="" {{ !request('category') ? 'selected' : '' }}>Category</option>
                             <option value="" {{ request('category') == 'all' ? 'selected' : '' }}>All</option>
-                            <option value="Travel Arrangement" {{ request('category') == 'Travel Arrangement' ? 'selected' : '' }}>Travel Arrangement</option>
-                            <option value="Marchandise/ATK" {{ request('category') == 'Marchandise/ATK' ? 'selected' : '' }}>Marchandise/ATK</option>
-                            <option value="Business Development" {{ request('category') == 'Business Development' ? 'selected' : '' }}>Business Development</option>
-                            <option value="IT" {{ request('category') == 'IT' ? 'selected' : '' }}>IT</option>
+                            <option value="801 Travel Arrangement" {{ request('category') == '801 Travel Arrangement' ? 'selected' : '' }}>801 Travel Arrangement</option>
+                            <option value="802 Merchandise/ATK" {{ request('category') == '802 Marchandise/ATK' ? 'selected' : '' }}>802 Marchandise/ATK</option>
+                            <option value="803 Business Development" {{ request('category') == '803 Business Development' ? 'selected' : '' }}>803 Business Development</option>
+                            <option value="804 IT" {{ request('category') == '803 IT' ? 'selected' : '' }}>804 IT</option>
                             <option value="Manpower Supply" {{ request('category') == 'Manpower Supply' ? 'selected' : '' }}>Manpower Supply</option>
-                            <option value="Event Organizer" {{ request('category') == 'Event Organizer' ? 'selected' : '' }}>Event Organizer</option>
-                            <option value="Printing" {{ request('category') == 'Printing' ? 'selected' : '' }}>Printing</option>
-                            <option value="Car Rental" {{ request('category') == 'Car Rental' ? 'selected' : '' }}>Car Rental</option>
-                            <option value="Company Loan" {{ request('category') == 'Company Loan' ? 'selected' : '' }}>Company Loan</option>
-                            <option value="Rent Building" {{ request('category') == 'Rent Building' ? 'selected' : '' }}>Rent Building</option>
+                            <option value="806 Event Organizer" {{ request('category') == '806 Event Organizer' ? 'selected' : '' }}>806 Event Organizer</option>
+                            <option value="807 Printing" {{ request('category') == '807 Printing' ? 'selected' : '' }}>807 Printing</option>
+                            <option value="808 Car Rental" {{ request('category') == '808 Car Rental' ? 'selected' : '' }}>808 Car Rental</option>
+                            <option value="809 Company Loan" {{ request('category') == '809 Company Loan' ? 'selected' : '' }}>809 Company Loan</option>
+                            <option value="809 Moving Office" {{ request('category') == '809 Moving Office' ? 'selected' : '' }}>809 Moving Office</option>
+                            <option value="809 Others" {{ request('category') == '809 Others' ? 'selected' : '' }}>809 Others</option>
+                            <option value="810 Rent Building" {{ request('category') == '810 Rent Building' ? 'selected' : '' }}>810 Rent Building</option>
                         </select>
                     </div>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Apply</button>
@@ -143,9 +145,9 @@
 
     @if ($experiences instanceof \Illuminate\Pagination\LengthAwarePaginator || $experiences instanceof \Illuminate\Pagination\Paginator)
 
-    <div class="w-56  py-2 px-6">
+    <div class="w-80  py-2 px-6">
         <p class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">
-            Page : {{ $experiences->currentpage() }} from {{ $experiences->lastpage() }}
+            Page : {{ $experiences->currentpage() }} to {{ $experiences->lastpage() }}  from {{ $experiences->total() }} data
         </p>
     </div>
 
