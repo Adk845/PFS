@@ -169,7 +169,7 @@
                             </a>
                         </th> -->
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
-                            <a href="?sortBy=project_no&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}&page={{ request('page') }}"" class="flex items-center">
+                            <a href="?sortBy=project_no&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}&page={{ request('page') }}" class="flex items-center">
                                 Project No
                                 <span class="ml-2">
                                     <span class="sort-indicator {{ request('sortBy') == 'project_no' && request('order') == 'asc' ? 'asc' : '' }} {{ request('sortBy') == 'project_no' && request('order') == 'desc' ? 'desc' : '' }} {{ request('sortBy') != 'project_no' ? 'default' : '' }}"></span>

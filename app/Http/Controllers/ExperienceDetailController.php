@@ -84,6 +84,9 @@ class ExperienceDetailController extends Controller
         
     
         $experiences_query = ExperienceDetail::query()
+            ->orderBy('created_at', 'desc')
+            ->orderBy('updated_at', 'desc')
+
             ->when($search, function($query, $search) {
                 return $query->where('project_name', 'like', "%{$search}%")
                              ->orWhere('client_name', 'like', "%{$search}%");
