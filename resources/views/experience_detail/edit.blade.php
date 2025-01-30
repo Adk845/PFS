@@ -71,9 +71,9 @@
         <option value="" disabled {{ old('category', $category) == '' ? 'selected' : '' }}>Choose category</option>
         <option value="801 Travel Arrangement" {{ old('category', $category) == '801 Travel Arrangement' ? 'selected' : '' }}>801 Travel Arrangement (Flight and Accommodations)</option>
         <option value="802 Marchandise/ATK" {{ old('category', $category) == '802 Marchandise/ATK' ? 'selected' : '' }}>802 Marchandise/ATK</option>
-        <option value="803 Business Development" {{ old('category', $category) == '803 Business Development' ? 'selected' : '' }}>803 Business Development</option>
-        <option value="803 Manpower Supply" {{ old('category', $category) == '803 Manpower Supply' ? 'selected' : '' }}>803 Manpower Supply</option>
+        <option value="803 Business Development" {{ old('category', $category) == '803 Business Development' ? 'selected' : '' }}>803 Business Development</option>        
         <option value="804 IT" {{ old('category', $category) == '804 IT' ? 'selected' : '' }}>804 IT</option>
+        <option value="805 Manpower Supply" {{ old('category', $category) == '805 Manpower Supply' ? 'selected' : '' }}>805 Manpower Supply</option>
         <option value="806 Event Organizer" {{ old('category', $category) == '806 Event Organizer' ? 'selected' : '' }}>806 Event Organizer</option>
         <option value="807 Printing" {{ old('category', $category) == '807 Printing' ? 'selected' : '' }}>807 Printing</option>
         <option value="808 Car Rental" {{ old('category', $category) == '808 Car Rental' ? 'selected' : '' }}>808 Car Rental</option>
