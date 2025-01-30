@@ -71,25 +71,29 @@ class ExperienceDetailController extends Controller
     
     
 
-
     public function index(Request $request)
     {
         $search = $request->input('search');
+        // $searchBy = $request->input('searchBy') ? $request->input('searchBy') : 'project_name';
+        $searchBy = $request->input('searchBy');
         $category = $request->input('category');
         $paginate = $request->input('pagination');
         $validColumns = ['project_no', 'project_name', 'client_name', 'date_project_start']; 
         $sortBy = in_array($request->input('sortBy'), $validColumns) ? $request->input('sortBy') : 'project_no'; 
         $order = $request->input('order', 'asc'); 
-    
-        
+        // return $request->all();
+        // if($request->input('search')){
+        //     dd($searchBy);
+        // }
     
         $experiences_query = ExperienceDetail::query()
             ->orderBy('created_at', 'desc')
             ->orderBy('updated_at', 'desc')
 
-            ->when($search, function($query, $search) {
-                return $query->where('project_name', 'like', "%{$search}%")
-                             ->orWhere('client_name', 'like', "%{$search}%");
+            ->when($search, function($query) use ($search, $searchBy) {
+                // return $query->where('project_name', 'like', "%{$search}%")
+                //              ->orWhere('client_name', 'like', "%{$search}%");
+                return $query->where($searchBy, 'like', "%{$search}%");
             })
             ->when($category, function($query, $category) {
                 return $query->where('category', $category);

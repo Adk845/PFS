@@ -34,11 +34,19 @@
 
             <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Create New Experience</a>
 
-            <div class="flex items-center">
-
+            <div class="flex items-center">                
                 <form method="GET" action="{{ route('experiences.index') }}" class="flex items-center">
+                    <div class="w-40 mr-2"> <!-- Perpanjang dengan w-64 -->
+                        <select name="searchBy" id="searchBy" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option class="searchBy" data-searchby = 'Project Name' value="project_name" {{ !request('searchBy') ? 'selected' : '' }}>Project Name</option>
+                            <option class="searchBy" data-searchby = 'Client Name' value="client_name" {{ request('searchBy') == 'client_name' ? 'selected' : '' }}>Client Name</option>
+                            <option class="searchBy" data-searchby = 'KBLI Number' value="kbli_number" {{ request('searchBy') == 'kbli_number' ? 'selected' : '' }}>KBLI Number</option>
+                            <option class="searchBy" data-searchby = 'Location' value="locations" {{ request('searchBy') == 'locations' ? 'selected' : '' }}>Location</option>            
+                        </select>
+                    </div>
+                    
                     <div class="w-64 relative mr-2"> <!-- Perpanjang dengan w-64 -->
-                        <input type="text" name="search" id="search" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10" value="{{ request('search') }}" placeholder="Search...">
+                        <input type="text" name="search" id="search" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 pr-10" value="{{ request('search') }}" placeholder="Search Project Name">
                         <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-600">
                             <i class="fa fa-search"></i> <!-- Gunakan ikon pencarian Font Awesome -->
                         </button>
@@ -60,9 +68,9 @@
                             <option value="" {{ request('category') == 'all' ? 'selected' : '' }}>All</option>
                             <option value="801 Travel Arrangement" {{ request('category') == '801 Travel Arrangement' ? 'selected' : '' }}>801 Travel Arrangement</option>
                             <option value="802 Merchandise/ATK" {{ request('category') == '802 Marchandise/ATK' ? 'selected' : '' }}>802 Marchandise/ATK</option>
-                            <option value="803 Business Development" {{ request('category') == '803 Business Development' ? 'selected' : '' }}>803 Business Development</option>
+                            <option value="803 Business Development" {{ request('category') == '803 Business Development' ? 'selected' : '' }}>803 Business Development</option>                            
                             <option value="804 IT" {{ request('category') == '803 IT' ? 'selected' : '' }}>804 IT</option>
-                            <option value="Manpower Supply" {{ request('category') == 'Manpower Supply' ? 'selected' : '' }}>Manpower Supply</option>
+                            <option value="805 Manpower Supply" {{ request('category') == '805 Manpower Supply' ? 'selected' : '' }}>805 Manpower Supply</option>                            
                             <option value="806 Event Organizer" {{ request('category') == '806 Event Organizer' ? 'selected' : '' }}>806 Event Organizer</option>
                             <option value="807 Printing" {{ request('category') == '807 Printing' ? 'selected' : '' }}>807 Printing</option>
                             <option value="808 Car Rental" {{ request('category') == '808 Car Rental' ? 'selected' : '' }}>808 Car Rental</option>
@@ -74,6 +82,11 @@
                     </div>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Apply</button>
                 </form>
+                <div class="reset_filter">
+                    <a  href="{{ route('experiences.index') }}">
+                        <button class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition ml-4 w-full md:w-auto">Reset Filter</button>
+                    </a>
+                </div>
 
                 <div class="dropdown ml-2">
                     <!-- Dropdown Toggle Button -->

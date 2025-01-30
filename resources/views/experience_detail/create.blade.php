@@ -72,9 +72,9 @@
         <option value="" disabled selected>Choose category</option>
         <option value="801 Travel Arrangement">801 Travel Arrangement (Flight and Accommodations)</option>
         <option value="802 Merchandise/ATK">802 Merchandise/ATK</option>
-        <option value="803 Business Development">803 Business Development</option>
-        <option value="803 Manpower Supply">803 Manpower Supply</option>
+        <option value="803 Business Development">803 Business Development</option>        
         <option value="804 IT">804 IT</option>        
+        <option value="805 Manpower Supply">805 Manpower Supply</option>
         <option value="806 Event Organizer">806 Event Organizer</option>
         <option value="807 Printing">807 Printing</option>
         <option value="808 Car Rental">808 Car Rental</option>
