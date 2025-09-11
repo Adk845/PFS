@@ -78,7 +78,7 @@ class ExperienceDetailController extends Controller
         $searchBy = $request->input('searchBy');
         $category = $request->input('category');
         $paginate = $request->input('pagination');
-        $validColumns = ['project_no', 'project_name', 'client_name', 'date_project_start']; 
+        $validColumns = ['project_no', 'project_name', 'client_name', 'date_project_start', 'kbli_number', 'category', 'durations', 'amount', 'status', 'locations', 'scope_of_work']; 
         $sortBy = in_array($request->input('sortBy'), $validColumns) ? $request->input('sortBy') : 'project_no'; 
         $order = $request->input('order', 'asc'); 
         // return $request->all();
@@ -224,17 +224,7 @@ public function generateBast($id)
     return redirect()->route('experiences.index');
 }
 
-public function edit($id)
-{
-    // Menarik data ExperienceDetail beserta relasi 'Images'
-    $experienceDetail = ExperienceDetail::with(['Images'])->findOrFail($id);
 
-    // Ambil kategori dari $experienceDetail, misalnya jika ada kolom 'category' di ExperienceDetail
-    $category = $experienceDetail->category;
-
-    // Kirimkan ke tampilan
-    return view('experience_detail.edit', compact('experienceDetail', 'category'));
-}
 
 
 public function edit_api($id)
@@ -243,6 +233,19 @@ public function edit_api($id)
     return response()->json($experienceDetail);
 }
 
+public function edit(Request $request, $id)
+{
+    // Menarik data ExperienceDetail beserta relasi 'Images'
+    $experienceDetail = ExperienceDetail::with(['Images'])->findOrFail($id);
+
+    // Ambil kategori dari $experienceDetail, misalnya jika ada kolom 'category' di ExperienceDetail
+    $category = $experienceDetail->category;
+     $queryParams = $request->query();
+
+
+    // Kirimkan ke tampilan
+    return view('experience_detail.edit', compact('experienceDetail', 'category', 'queryParams'));
+}
 
 public function update(Request $request, $id)
 {
@@ -326,7 +329,18 @@ public function update(Request $request, $id)
             ]);
         }
     }
-    return redirect()->route('experiences.index');
+    
+     $queryParams = $request->except([
+        '_token', '_method', 'category', 'status', 'project_no', 'project_name',
+        'client_name', 'durations', 'date_project_start', 'date_project_end',
+        'locations', 'amount', 'kbli_number', 'scope_of_work',
+        'images', 'images_id_delete', 'images_id'
+    ]);
+
+    // bisa juga pakai $request->query() kalau yakin querynya ada
+
+    return redirect()->route('experiences.index', $queryParams)
+                     ->with('success', 'Data updated successfully.');
    
 }
 

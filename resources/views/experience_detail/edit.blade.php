@@ -7,6 +7,16 @@
         <form method="POST" action="{{ route('experiences.update', $experienceDetail->id) }}" enctype="multipart/form-data" class="space-y-4">
             @csrf
             @method('PUT')
+
+             {{-- Masukkan semua query string sebagai hidden input --}}
+@php
+    $allQueryParams = request()->all(); // ambil semua query param, termasuk yang kosong
+@endphp
+
+@foreach ($allQueryParams as $key => $value)
+    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+@endforeach
+
             <div>
                 <label for="project_name" class="block text-sm font-medium text-gray-700">Project Name</label>
                 <input type="text" name="project_name" id="project_name" value="{{ old('project_name', $experienceDetail->project_name) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>

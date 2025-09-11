@@ -213,9 +213,47 @@
 
 
 
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">KBLI number</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Category</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Durations</th>
+                       {{-- KBLI Number --}}
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=kbli_number&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                                KBLI Number
+                                <span class="ml-2">
+                                    <span class="sort-indicator 
+                                        {{ request('sortBy') == 'kbli_number' && request('order') == 'asc' ? 'asc' : '' }} 
+                                        {{ request('sortBy') == 'kbli_number' && request('order') == 'desc' ? 'desc' : '' }} 
+                                        {{ request('sortBy') != 'kbli_number' ? 'default' : '' }}">
+                                    </span>
+                                </span>
+                            </a>
+                        </th>
+
+                        {{-- Category --}}
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=category&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                                Category
+                                <span class="ml-2">
+                                    <span class="sort-indicator 
+                                        {{ request('sortBy') == 'category' && request('order') == 'asc' ? 'asc' : '' }} 
+                                        {{ request('sortBy') == 'category' && request('order') == 'desc' ? 'desc' : '' }} 
+                                        {{ request('sortBy') != 'category' ? 'default' : '' }}">
+                                    </span>
+                                </span>
+                            </a>
+                        </th>
+
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=duration&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                                Duration
+                                <span class="ml-2">
+                                    <span class="sort-indicator 
+                                        {{ request('sortBy') == 'duration' && request('order') == 'asc' ? 'asc' : '' }} 
+                                        {{ request('sortBy') == 'duration' && request('order') == 'desc' ? 'desc' : '' }} 
+                                        {{ request('sortBy') != 'duration' ? 'default' : '' }}">
+                                    </span>
+                                </span>
+                            </a>
+                        </th>
+
                         <!-- <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Period</th> -->
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
                             <a href="?sortBy=date_project_start&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
@@ -228,10 +266,61 @@
 
 
 
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Locations</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Scope of Work</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
-                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Amount Contract</th>
+                        {{-- Locations --}}
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                    <a href="?sortBy=location&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                        Locations
+                        <span class="ml-2">
+                            <span class="sort-indicator 
+                                {{ request('sortBy') == 'location' && request('order') == 'asc' ? 'asc' : '' }} 
+                                {{ request('sortBy') == 'location' && request('order') == 'desc' ? 'desc' : '' }} 
+                                {{ request('sortBy') != 'location' ? 'default' : '' }}">
+                            </span>
+                        </span>
+                    </a>
+                </th>
+
+                {{-- Scope of Work --}}
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                    <a href="?sortBy=scope_of_work&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                        Scope of Work
+                        <span class="ml-2">
+                            <span class="sort-indicator 
+                                {{ request('sortBy') == 'scope_of_work' && request('order') == 'asc' ? 'asc' : '' }} 
+                                {{ request('sortBy') == 'scope_of_work' && request('order') == 'desc' ? 'desc' : '' }} 
+                                {{ request('sortBy') != 'scope_of_work' ? 'default' : '' }}">
+                            </span>
+                        </span>
+                    </a>
+                </th>
+
+                {{-- Status --}}
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                    <a href="?sortBy=status&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                        Status
+                        <span class="ml-2">
+                            <span class="sort-indicator 
+                                {{ request('sortBy') == 'status' && request('order') == 'asc' ? 'asc' : '' }} 
+                                {{ request('sortBy') == 'status' && request('order') == 'desc' ? 'desc' : '' }} 
+                                {{ request('sortBy') != 'status' ? 'default' : '' }}">
+                            </span>
+                        </span>
+                    </a>
+                </th>
+
+                {{-- Amount Contract --}}
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                    <a href="?sortBy=amount_contract&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
+                        Amount Contract
+                        <span class="ml-2">
+                            <span class="sort-indicator 
+                                {{ request('sortBy') == 'amount_contract' && request('order') == 'asc' ? 'asc' : '' }} 
+                                {{ request('sortBy') == 'amount_contract' && request('order') == 'desc' ? 'desc' : '' }} 
+                                {{ request('sortBy') != 'amount_contract' ? 'default' : '' }}">
+                            </span>
+                        </span>
+                    </a>
+                </th>
 
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Images</th>
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
@@ -274,9 +363,10 @@
                                     </button>
                                 </x-slot>
                                 <x-slot name="content">
-                                    <x-dropdown-link :href="route('experiences.edit', $experienceDetail->id)">
+                                    <x-dropdown-link :href="route('experiences.edit', [$experienceDetail->id]) . '?' . http_build_query(request()->query())">
                                         Edit
                                     </x-dropdown-link>
+
                                     <x-dropdown-link :href="route('experiences.pdffs', $experienceDetail->id)" target="_blank">
                                         Download FactSheet
                                     </x-dropdown-link>
