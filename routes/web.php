@@ -17,9 +17,9 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('auth/login');
-});
+Route::get('/', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('home');
 
 
 

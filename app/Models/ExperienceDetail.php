@@ -30,4 +30,11 @@ class ExperienceDetail extends Model
     {
         return $this->hasMany(Image::class);
     }
+
+public function getAmountAttribute($value)
+{
+    return (float) str_replace('.', '', $value);
+}
+
+
 }

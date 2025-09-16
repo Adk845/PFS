@@ -38,7 +38,21 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Save</button>
+                    <div class="flex space-x-3">
+                    <!-- Save Button -->
+                    <button type="submit" 
+                        class="px-5 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
+                        Save
+                    </button>
+
+                    <!-- Cancel / Back Button -->
+                    <a href="{{ route('admin.users') }}" 
+                    class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                        Cancel
+                    </a>
+                </div>
+
+
                 </form>
             </div>
         </div>

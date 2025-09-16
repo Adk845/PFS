@@ -28,72 +28,78 @@
 
             <!-- Right Side -->
          <!-- Right Side -->
-<div class="hidden sm:flex sm:items-center space-x-10 ml-auto pr-6">
+<div class="hidden sm:flex sm:items-center ml-auto pr-6 space-x-8">
     <!-- Navigation Links -->
     <a href="{{ route('dashboard') }}"
-       class="text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
-        <i class="fas fa-tachometer-alt ml-3"></i> Dashboard
+       class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
+        <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
     </a>
 
     <a href="{{ route('experience.index') }}"
-       class="text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
-        <i class="fas fa-briefcase ml-3"></i> Experience Details
+       class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
+        <i class="fas fa-briefcase mr-2"></i> Experience Details
     </a>
 
     @if(Auth::user()->role === 'admin')
         <a href="{{ route('admin.users') }}"
-           class="text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
-            <i class="fas fa-users ml-3"></i> Users
+           class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
+            <i class="fas fa-users mr-2"></i> Users
         </a>
     @endif
 
     <!-- User Info Dropdown -->
     <x-dropdown align="right" width="48">
-        <x-slot name="trigger">
-            <div class="flex items-center cursor-pointer hover:text-gray-200 transition">
-                <!-- Avatar -->
-                <div class="h-8 w-8 rounded-full bg-gray-300 dark:bg-gray-600 
-                            flex items-center justify-center text-gray-700 dark:text-gray-200 mr-2">
-                    <i class="fas fa-user"></i>
-                </div>
-                <!-- User Info -->
-                <div class="flex flex-col text-left leading-tight">
-                    <span class="text-sm font-medium text-white dark:text-gray-200">
-                        {{ Auth::user()->name }}
-                    </span>
-                    <span class="text-xs text-gray-200 dark:text-gray-400">
-                        {{ Auth::user()->email }}
-                    </span>
-                </div>
-                <!-- Dropdown Icon -->
-                <svg class="ml-2 h-4 w-4 fill-current text-gray-200" 
-                     xmlns="http://www.w3.org/2000/svg" 
-                     viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" 
-                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 
-                             111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 
-                             1 0 010-1.414z" 
-                          clip-rule="evenodd" />
-                </svg>
+    <x-slot name="trigger">
+        <button 
+            class="flex items-center px-4 py-2 bg-white rounded-md shadow 
+                   text-gray-800 hover:bg-gray-100 transition">
+            <!-- Avatar -->
+            <div class="h-8 w-8 rounded-full bg-gray-300 
+                        flex items-center justify-center text-gray-700 mr-2">
+                <i class="fas fa-user"></i>
             </div>
-        </x-slot>
 
-        <x-slot name="content">
-            <x-dropdown-link :href="route('profile.edit')">
-                <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+            <!-- User Info -->
+            <div class="flex flex-col text-left leading-tight">
+                <span class="text-sm font-medium">
+                    {{ Auth::user()->name }}
+                </span>
+                <span class="text-xs text-gray-500">
+                    {{ Auth::user()->email }}
+                </span>
+            </div>
+
+            <!-- Dropdown Icon -->
+            <svg class="ml-2 h-4 w-4 fill-current text-gray-500" 
+                 xmlns="http://www.w3.org/2000/svg" 
+                 viewBox="0 0 20 20">
+                <path fill-rule="evenodd" 
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 
+                         111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 
+                         1 0 010-1.414z" 
+                      clip-rule="evenodd" />
+            </svg>
+        </button>
+    </x-slot>
+
+    <x-slot name="content">
+        <x-dropdown-link :href="route('profile.edit')">
+            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+        </x-dropdown-link>
+
+        <!-- Logout -->
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <x-dropdown-link :href="route('logout')"
+                onclick="event.preventDefault(); this.closest('form').submit();">
+                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
             </x-dropdown-link>
+        </form>
+    </x-slot>
+</x-dropdown>
 
-            <!-- Logout -->
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <x-dropdown-link :href="route('logout')"
-                    onclick="event.preventDefault(); this.closest('form').submit();">
-                    <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
-                </x-dropdown-link>
-            </form>
-        </x-slot>
-    </x-dropdown>
 </div>
+
 
 
             <!-- Mobile Hamburger -->
