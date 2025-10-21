@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PfsExport;
 use App\Imports\PfsImport;
+use App\Models\Rfp;
 
 
 class ExperienceDetailController extends Controller
@@ -72,48 +73,57 @@ class ExperienceDetailController extends Controller
     
 
     public function index(Request $request)
-    {
-        $search = $request->input('search');
-        // $searchBy = $request->input('searchBy') ? $request->input('searchBy') : 'project_name';
-        $searchBy = $request->input('searchBy');
-        $category = $request->input('category');
-        $paginate = $request->input('pagination');
-        $validColumns = ['project_no', 'project_name', 'client_name', 'date_project_start', 'kbli_number', 'category', 'durations', 'amount', 'status', 'locations', 'scope_of_work']; 
-        $sortBy = in_array($request->input('sortBy'), $validColumns) ? $request->input('sortBy') : 'project_no'; 
-        $order = $request->input('order', 'asc'); 
-        // return $request->all();
-        // if($request->input('search')){
-        //     dd($searchBy);
-        // }
-        // dd($request->input('order'));
-        $experiences_query = ExperienceDetail::query()
-            // ->orderBy('created_at', 'desc')
-            // ->orderBy('updated_at', 'desc')
-            ->when(!$request->input('order'), function($query){
-                return $query->orderBy('updated_at', 'desc');
-            })
-            ->when(!$request->input('order'), function($query){
-                return $query->orderBy('created_at', 'desc');
-            })
-            ->when($search, function($query) use ($search, $searchBy) {
-                // return $query->where('project_name', 'like', "%{$search}%")
-                //              ->orWhere('client_name', 'like', "%{$search}%");
-                return $query->where($searchBy, 'like', "%{$search}%");
-            })
-            ->when($category, function($query, $category) {
-                return $query->where('category', $category);
-            }) ->orderBy($sortBy, $order);  
+{
+    $search     = $request->input('search');
+    $searchBy   = $request->input('searchBy');
+    $category   = $request->input('category'); // <-- ambil filter kategori user
+    $categories = ExperienceDetail::select('category')->distinct()->pluck('category'); // <-- buat dropdown/filter
 
-            if($paginate === 'all') {
-                $experiences = $experiences_query->get();
-            } else {
-                $experiences = $experiences_query->paginate((int) $paginate);
-                $experiences->appends($request->all());
-            }
+    $paginate   = $request->input('pagination');
+    $year       = $request->input('year');
+    $status     = $request->input('status');
 
-            // return($experiences);
-        return view('experience_detail.index', compact('experiences'));
+    $validColumns = [
+        'project_no', 'project_name', 'client_name', 'date_project_start',
+        'kbli_number', 'category', 'durations', 'amount', 'status',
+        'locations', 'scope_of_work'
+    ]; 
+    
+    $sortBy = in_array($request->input('sortBy'), $validColumns) ? $request->input('sortBy') : 'project_no'; 
+    $order  = $request->input('order', 'asc'); 
+
+    $experiences_query = ExperienceDetail::query()
+        ->when(!$request->input('order'), function($query){
+            return $query->orderBy('updated_at', 'desc');
+        })
+        ->when(!$request->input('order'), function($query){
+            return $query->orderBy('created_at', 'desc');
+        })
+        ->when($search && $searchBy, function($query) use ($search, $searchBy) {
+            return $query->where($searchBy, 'like', "%{$search}%");
+        })
+        ->when($category, function($query, $category) {
+            return $query->where('category', $category);
+        })
+        ->when($status, function($query, $status) {
+            return $query->where('status', $status);
+        })
+        ->when($year, function($query, $year) {
+            return $query->whereYear('date_project_start', $year);
+        })
+        ->orderBy($sortBy, $order);
+
+    if ($paginate === 'all') {
+        $experiences = $experiences_query->get();
+    } else {
+        $experiences = $experiences_query->paginate((int) $paginate);
+        $experiences->appends($request->all());
     }
+
+    return view('experience_detail.index', compact('experiences', 'categories', 'category', 'year'));
+}
+
+
 
 public function generatePdffs($id)
 {
@@ -163,6 +173,67 @@ public function generateBast($id)
         ]);
     }
 
+    public function createFromRfp($rfp_id)
+    {
+        $rfp = Rfp::findOrFail($rfp_id);
+        return view('experience_detail.create_from_rfp', compact('rfp'));
+    }
+
+//         public function storeRfp(Request $request)
+// {     
+//     $request->validate([
+//        'category' => 'required|string|max:255',
+//         'status' => 'required|string|max:255',
+//         'project_no' => 'required|string|max:255',
+//         'project_name' => 'required|string|max:255',
+//         'client_name' => 'required|string|max:255', 
+//         'durations' => 'required|string|max:255',     
+//         'date_project_start' => 'required|date',
+//         'date_project_end' => 'required|date',
+//         'locations' => 'required|string|max:255',
+//         'amount' => 'nullable|string|max:255',
+//         'no_contract' => 'nullable|string|max:255',
+
+//         'kbli_number' => 'required|string|max:255',
+//         'scope_of_work' => 'required|string|max:600',
+//         'images.*' => 'image|mimes:jpeg,png,jpg,gifmax:6048',
+//     ]);
+
+//     $experienceDetail = new ExperienceDetail();
+//     $experienceDetail->category = $request->category;
+//     $experienceDetail->status = $request->status;
+//     $experienceDetail->project_no = $request->project_no;
+//     $experienceDetail->project_name = $request->project_name;
+//     $experienceDetail->client_name = $request->client_name;
+//     $experienceDetail->durations = $request->durations;
+//     $experienceDetail->date_project_start = $request->date_project_start;
+//     $experienceDetail->date_project_end = $request->date_project_end;
+//     $experienceDetail->locations = $request->locations;
+//     $experienceDetail->amount = $request->amount;
+//     $experienceDetail->no_contract = $request->no_contract;
+
+//     $experienceDetail->kbli_number = $request->kbli_number;
+//     $experienceDetail->scope_of_work = $request->scope_of_work;
+
+//     $experienceDetail->save(); 
+  
+//     if ($request->has('images')) {
+//         foreach ($request->file('images') as $file) {
+//             $path = $file->store('images', 'public'); 
+//             Image::create([ 
+//                 'experience_detail_id' => $experienceDetail->id,
+//                 'foto' => $path,
+//             ]);
+//         }
+//     }
+
+
+
+//     return redirect()->route('rfp.index');
+// }
+
+    
+
     public function create()
     {
         return view('experience_detail.create');
@@ -182,6 +253,7 @@ public function generateBast($id)
         'date_project_end' => 'required|date',
         'locations' => 'required|string|max:255',
         'amount' => 'nullable|string|max:255',
+        'no_contract' => 'nullable|string|max:255',
 
         'kbli_number' => 'required|string|max:255',
         'scope_of_work' => 'required|string|max:600',
@@ -199,6 +271,7 @@ public function generateBast($id)
     $experienceDetail->date_project_end = $request->date_project_end;
     $experienceDetail->locations = $request->locations;
     $experienceDetail->amount = $request->amount;
+    $experienceDetail->no_contract = $request->no_contract;
 
     $experienceDetail->kbli_number = $request->kbli_number;
     $experienceDetail->scope_of_work = $request->scope_of_work;
@@ -215,11 +288,7 @@ public function generateBast($id)
         }
     }
 
-    // return response()->json([
-    //     'status' => 'success',
-    //     'message' => 'Experience detail created successfully.',
-    //     'data' => $experienceDetail,
-    // ], 201);
+
 
     return redirect()->route('experiences.index');
 }
@@ -272,6 +341,7 @@ public function update(Request $request, $id)
         'date_project_end' => 'required|date',
         'locations' => 'required|string|max:255',
         'amount' => 'nullable|string|max:255',
+        'no_contract' => 'nullable|string|max:255',
 
         'kbli_number' => 'required|string|max:255',
         'scope_of_work' => 'required|string|max:600',
@@ -291,6 +361,7 @@ public function update(Request $request, $id)
     $experienceDetail->amount = $request->amount;
     $experienceDetail->kbli_number = $request->kbli_number;
     $experienceDetail->scope_of_work = $request->scope_of_work;
+    $experienceDetail->no_contract = $request->no_contract;
 
     $experienceDetail->save();
 
@@ -333,7 +404,7 @@ public function update(Request $request, $id)
      $queryParams = $request->except([
         '_token', '_method', 'category', 'status', 'project_no', 'project_name',
         'client_name', 'durations', 'date_project_start', 'date_project_end',
-        'locations', 'amount', 'kbli_number', 'scope_of_work',
+        'locations', 'amount', 'kbli_number', 'scope_of_work', 'no_contract',
         'images', 'images_id_delete', 'images_id'
     ]);
 

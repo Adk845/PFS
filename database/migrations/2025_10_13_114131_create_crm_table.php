@@ -1,0 +1,38 @@
+    <?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('crm', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->string('name');
+            $table->string('position')->nullable();
+            $table->string('company');
+            $table->string('email');
+            $table->string('address')->nullable();
+            $table->text('notes')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('website')->nullable();
+            $table->string('qr_code')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('crm');
+    }
+};

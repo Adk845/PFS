@@ -18,9 +18,16 @@
 @endforeach
 
             <div>
+                <label for="no_contract" class="block text-sm font-medium text-gray-700">No Contract</label>
+                <input type="text" name="no_contract" id="no_contract" value="{{ old('no_contract', $experienceDetail->no_contract) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" >
+            </div>            
+
+            <div>
                 <label for="project_name" class="block text-sm font-medium text-gray-700">Project Name</label>
                 <input type="text" name="project_name" id="project_name" value="{{ old('project_name', $experienceDetail->project_name) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
             </div>
+
+            
     
             <div>
                 <label for="client_name" class="block text-sm font-medium text-gray-700">Client Name</label>

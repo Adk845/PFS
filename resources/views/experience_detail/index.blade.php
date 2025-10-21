@@ -1,8 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Experience Details') }}
-        </h2>
+    @php
+        $title = 'Experience Details';
+        if(request('year')) {
+            $title .= ' - ' . request('year');
+        }
+        if(request('category')) {
+            $title .= ' - ' . request('category');
+        }
+         if(request('status')) {
+            $title .= ' - ' . request('status');
+        }
+    @endphp
+    {{ $title }}
+</h2>
     </x-slot>
 
     <style>
@@ -32,7 +44,7 @@
     <div class="px-6 py-2">
         <div class="flex justify-between items-center mt-10">
 
-            <a href="{{ route('experiences.create') }}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Create New Experience</a>
+            <a href="{{ route('experiences.create') }}" class="inline-block bg-red-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">Create New Experience</a>
 
             <div class="flex items-center">                
                 <form method="GET" action="{{ route('experiences.index') }}" class="flex items-center">
@@ -43,6 +55,16 @@
                             <option class="searchBy" data-searchby = 'KBLI Number' value="kbli_number" {{ request('searchBy') == 'kbli_number' ? 'selected' : '' }}>KBLI Number</option>
                             <option class="searchBy" data-searchby = 'Location' value="locations" {{ request('searchBy') == 'locations' ? 'selected' : '' }}>Location</option>            
                         </select>
+                    </div>
+
+
+                     <div class="w-45 mr-2">
+                     <select name="year" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">-- All Year --</option>
+                        @for($i = date('Y'); $i >= 2000; $i--)
+                            <option value="{{ $i }}" {{ request('year')==$i ? 'selected' : '' }}>{{ $i }}</option>
+                        @endfor
+                    </select>
                     </div>
                     
                     <div class="w-64 relative mr-2"> <!-- Perpanjang dengan w-64 -->
@@ -90,7 +112,7 @@
 
                 <div class="dropdown ml-2">
                     <!-- Dropdown Toggle Button -->
-                    <button class="dropdown-toggle bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ml-4 w-full md:w-auto" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="dropdown-toggle bg-red-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition ml-4 w-full md:w-auto" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Actions
                     </button>
 
@@ -109,7 +131,7 @@
                 </div>
 
                 <div class="ml-2">
-                    <button type="button" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition" data-bs-toggle="modal" data-bs-target="#importModal">
+                    <button type="button" class="inline-block bg-red-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition" data-bs-toggle="modal" data-bs-target="#importModal">
                         Import
                     </button>
 
@@ -159,7 +181,7 @@
     @if ($experiences instanceof \Illuminate\Pagination\LengthAwarePaginator || $experiences instanceof \Illuminate\Pagination\Paginator)
 
     <div class="w-80  py-2 px-6">
-        <p class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">
+        <p class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition">
             Page : {{ $experiences->currentpage() }} to {{ $experiences->lastpage() }}  from {{ $experiences->total() }} data
         </p>
     </div>
@@ -183,9 +205,21 @@
                                 </span>
                             </a>
                         </th> -->
+
+                        
+
                         <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
                             <a href="?sortBy=project_no&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}&page={{ request('page') }}" class="flex items-center">
                                 Project No
+                                <span class="ml-2">
+                                    <span class="sort-indicator {{ request('sortBy') == 'project_no' && request('order') == 'asc' ? 'asc' : '' }} {{ request('sortBy') == 'project_no' && request('order') == 'desc' ? 'desc' : '' }} {{ request('sortBy') != 'project_no' ? 'default' : '' }}"></span>
+                                </span>
+                            </a>
+                        </th>
+
+                                   <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <a href="?sortBy=project_no&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}&page={{ request('page') }}" class="flex items-center">
+                                No Contract
                                 <span class="ml-2">
                                     <span class="sort-indicator {{ request('sortBy') == 'project_no' && request('order') == 'asc' ? 'asc' : '' }} {{ request('sortBy') == 'project_no' && request('order') == 'desc' ? 'desc' : '' }} {{ request('sortBy') != 'project_no' ? 'default' : '' }}"></span>
                                 </span>
@@ -308,6 +342,8 @@
                     </a>
                 </th>
 
+     
+
                 {{-- Amount Contract --}}
                 <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
                     <a href="?sortBy=amount_contract&order={{ request('order') == 'asc' ? 'desc' : 'asc' }}&search={{ request('search') }}&category={{ request('category') }}&pagination={{ request('pagination') }}" class="flex items-center">
@@ -331,6 +367,7 @@
                     <tr>
                         {{-- <td class="px-6 py-3 text-sm">{{ $loop->iteration }}</td> --}}
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_no }}</td>
+                        <td class="px-6 py-3 text-sm">{{ $experienceDetail->no_contract }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->project_name }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->client_name }}</td>
                         <td class="px-6 py-3 text-sm">{{ $experienceDetail->kbli_number }}</td>

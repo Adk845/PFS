@@ -22,6 +22,7 @@ class ExperienceDetail extends Model
         'locations',
         'kbli_number',
         'scope_of_work',
+        'no_contract',
     ];
 
     
@@ -31,10 +32,16 @@ class ExperienceDetail extends Model
         return $this->hasMany(Image::class);
     }
 
-public function getAmountAttribute($value)
-{
-    return (float) str_replace('.', '', $value);
-}
+    public function getAmountAttribute($value)
+    {
+        return (float) str_replace('.', '', $value);
+    }
 
+    public function proposal()
+    {
+        return $this->belongsTo(Proposal::class, 'proposal_id');
+
+
+    }
 
 }

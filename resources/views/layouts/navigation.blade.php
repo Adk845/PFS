@@ -1,5 +1,5 @@
 <nav x-data="{ open: false }" 
-     class="bg-blue-500 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+     class="bg-red-500 dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700" style="background-color: #800000;">
     <!-- Container -->
     <div class="mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -35,17 +35,65 @@
         <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
     </a>
 
+     @if(Auth::user()->role === 'admin')
+    <a href="{{ route('crm.index') }}"
+       class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
+        <i class="fas fa-users mr-2"></i> CRM
+    </a>
+
+
+    <a href="{{ route('leads.dashboard') }}"
+       class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
+        <i class="fas fa-users mr-2"></i> Leads
+    </a>
+
+    
+    <a href="{{ route('proposals.index') }}"
+       class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
+        <i class="fas fa-file mr-2"></i> Proposals
+    </a>
+     @endif
+
     <a href="{{ route('experience.index') }}"
        class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
         <i class="fas fa-briefcase mr-2"></i> Experience Details
     </a>
 
-    @if(Auth::user()->role === 'admin')
-        <a href="{{ route('admin.users') }}"
-           class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
-            <i class="fas fa-users mr-2"></i> Users
-        </a>
-    @endif
+      <a href="{{ route('broadcast.index') }}"
+       class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
+        <i class="fas fa-envelope mr-2"></i>  Broadcast Email
+    </a>
+   
+
+@if(Auth::user()->role === 'admin')
+    <div x-data="{ open: false }" class="relative">
+        <button @click="open = !open" class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition focus:outline-none">
+            <i class="fas fa-user-shield mr-2"></i>
+            Admin Menu
+            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+        </button>
+
+        <div x-show="open" @click.outside="open = false"
+             class="absolute bg-gray-800 text-white dark:bg-gray-700 mt-2 rounded-lg shadow-lg w-40">
+            <a href="{{ route('admin.users') }}" 
+               class="flex items-center px-4 py-2 text-sm hover:bg-gray-700 rounded-t-lg transition">
+                <i class="fas fa-user mr-2"></i> Users
+            </a>
+
+             <a href="{{ route('categories.index') }}" 
+               class="flex items-center px-4 py-2 text-sm hover:bg-gray-700 rounded-b-lg transition">
+                <i class="fas fa-envelope mr-2"></i>Category
+            </a>
+           
+
+            <!-- <a href="{{ route('leads.index') }}" 
+               class="flex items-center px-4 py-2 text-sm hover:bg-gray-700 rounded-b-lg transition">
+                <i class="fas fa-envelope mr-2"></i> Broadcast Email
+            </a> -->
+        </div>
+    </div>
+@endif
+
 
     <!-- User Info Dropdown -->
     <x-dropdown align="right" width="48">
