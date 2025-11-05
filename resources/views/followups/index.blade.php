@@ -11,7 +11,14 @@
   @endif
 
   {{-- HEADER --}}
-  <div class="d-flex justify-content-between align-items-center mb-4">
+
+   <div class="mt-3">
+      <a href="{{ route('leads.index') }}" class="btn btn-outline-danger">
+        <i class="bi bi-arrow-left"></i> Back
+      </a>
+    </div>
+
+  <div class="d-flex justify-content-between align-items-center mb-4 mt-5">
     <div>
       <h2 class="fw-bold text-danger mb-1">
         <i class="bi bi-chat-dots-fill me-2"></i>Follow Ups — 
@@ -19,9 +26,15 @@
       </h2>
       <p class="text-muted small mb-0">Monitor communication activities and progress of each lead.</p>
     </div>
-    <button class="btn btn-danger shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#addFollowUpModal">
+    <div><button class="btn btn-danger shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#addFollowUpModal">
       <i class="bi bi-plus-circle me-1"></i> Add Follow Up
     </button>
+
+     <button class="btn btn-danger shadow-sm rounded-3" data-bs-toggle="modal" data-bs-target="#addFollowUpModal">
+      <i class="bi bi-plus-circle me-1"></i> Add Appointment
+    </button>
+  </div>
+    
   </div>
 
   {{-- Timeline Follow-ups --}}
@@ -70,6 +83,41 @@
   @endif
 </div>
 
+<!-- modal appointment -->
+ <!-- Modal -->
+<div class="modal fade" id="addFollowUpModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="followUpForm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Appointment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="lead_id" value="{{ $lead->id }}">
+          <div class="mb-3">
+            <label>Title</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Reminder Date & Time</label>
+            <input type="datetime-local" name="reminder_at" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label>Description</label>
+            <textarea name="description" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
 {{-- MODAL TAMBAH FOLLOW UP --}}
 <div class="modal fade" id="addFollowUpModal" tabindex="-1" aria-labelledby="addFollowUpLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -79,6 +127,7 @@
         <h5 class="modal-title"><i class="bi bi-plus-circle me-1"></i> Add Follow Up</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
       </div>
+      
       <div class="modal-body bg-light">
         <div class="mb-3">
           <label for="date" class="form-label fw-semibold">Date</label>

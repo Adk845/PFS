@@ -124,6 +124,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     //proposal routes
     Route::resource('proposals', ProposalController::class);
+    Route::get('proposals/show/{id}', [ProposalController::class, 'show2'])->name('proposals.show2');
 
     // Route::get('experience/create/{rfp_id}', [ExperienceDetailController::class, 'createFromRfp'])->name('experience.createFromRfp');
     // Route::post('experience/store', [ExperienceDetailController::class, 'storeRfp'])->name('experience.storeRfp');
@@ -132,6 +133,48 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 });
 
+
+// Semua user yang login bisa akses leads
+Route::middleware(['auth'])->group(function () {
+     route::resource('leads', LeadController::class);
+   route::get('/leads-dashboard', [LeadController::class, 'dashboard'])->name('leads.dashboard');
+   // Menampilkan leads berdasarkan kategori
+    Route::get('/leads/category/{category}', [LeadController::class, 'byCategory'])->name('leads.byCategory');
+
+    Route::prefix('admin/leads/{lead_id}/followups')->group(function () {
+    Route::get('/', [FollowUpController::class, 'index'])->name('followups.index');
+    Route::post('/', [FollowUpController::class, 'store'])->name('followups.store');
+    Route::get('{id}/edit', [FollowUpController::class, 'edit'])->name('followups.edit');
+    Route::put('{id}', [FollowUpController::class, 'update'])->name('followups.update');
+    Route::delete('{id}', [FollowUpController::class, 'destroy'])->name('followups.destroy');
+    
+    });
+
+      Route::get('admin/crm', [CrmController::class, 'index'])->name('crm.index');
+    Route::get('admin/crm/create', [CrmController::class, 'create'])->name('crm.create');
+    Route::post('admin/crm/store', [CrmController::class, 'store'])->name('crm.store');
+    Route::get('admin/crm/{id}/edit', [CrmController::class, 'edit'])->name('crm.edit');
+    Route::put('admin/crm/{id}', [CrmController::class, 'update'])->name('crm.update');
+    Route::delete('admin/crm/{id}', [CrmController::class, 'destroy'])->name('crm.destroy');   
+    Route::get('admin/crm/{id}', [CrmController::class, 'show'])->name('crm.show');
+     Route::put('/admin/crm/{id}/update-multiple', [CrmController::class, 'updateMultiple'])->name('crm.updateMultiple');
+
+    // Untuk update field CRM
+    Route::put('/crm/{crm}/{field}', [CrmController::class, 'updateField'])->name('crm.updateField');
+    // Untuk update field persona
+    Route::put('/persona/{persona}/{field}', [CustomerPersonaController::class, 'updateField'])->name('persona.updateField');
+   
+
+
+    //C=USTOMER PERSONA ROUTES
+    Route::resource('personas', CustomerPersonaController::class);
+    Route::put('/persona/{id}/update-multiple', [PersonaController::class, 'updateMultiple']);
+
+
+
+
+    
+});
 
 
 });

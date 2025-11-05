@@ -1,26 +1,10 @@
 <x-app-layout>
 <main class="app-main">
     <!--  Page Header -->
-    <div class="app-content-header mb-4">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center flex-wrap">
-                <h3 class="fw-bold text-danger mb-2">
-                    <i class="bi bi-person-plus-fill me-2"></i> Add CRM Data
-                </h3>
-                <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item">
-                        <a href="{{ route('dashboard') }}" class="text-decoration-none text-secondary">
-                            Home
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item active text-dark">Create CRM</li>
-                </ol>
-            </div>
-        </div>
-    </div>
+    
 
     <!--  Page Content -->
-    <div class="app-content">
+    <div class="app-content mt-10">
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-xl-8">

@@ -35,5 +35,6 @@ class Proposal extends Model
     {
         return $this->hasMany(ProposalFile::class);
     }
+    
 
 }

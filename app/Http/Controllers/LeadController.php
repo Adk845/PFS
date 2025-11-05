@@ -16,6 +16,16 @@ class LeadController extends Controller
 
 public function dashboard()
 {
+    $user = auth()->user();
+
+    if ($user->role === 'admin') {
+        $categories = Categories::all();
+    } else {
+        $categories = $user->categories; 
+    }
+
+    $categoryIds = $categories->pluck('id'); 
+
     $totalLeads = \DB::table('leads')->count();
 
     $priority = ['Client Category A (Priority)', 'Client Category B', 'Client Category C'];
@@ -23,17 +33,23 @@ public function dashboard()
     $leadByCategory = \DB::table('categories')
         ->leftJoin('crm', 'categories.id', '=', 'crm.category_id')
         ->leftJoin('leads', 'crm.id', '=', 'leads.crm_id')
-        ->select('categories.id as category_id', 'categories.name as category_name', \DB::raw('COUNT(leads.id) as total'))
-        ->groupBy('categories.id','categories.name')
+        ->select(
+            'categories.id as category_id',
+            'categories.name as category_name',
+            \DB::raw('COUNT(leads.id) as total')
+        )
+        ->whereIn('categories.id', $categoryIds)
+        ->groupBy('categories.id', 'categories.name')
         ->get();
 
-    $colors = ['bg-primary','bg-success','bg-danger','bg-warning','bg-info','bg-secondary','bg-dark'];
-    $leadByCategory = $leadByCategory->map(function($cat) use ($colors) {
+    $colors = ['bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-secondary', 'bg-dark'];
+
+    $leadByCategory = $leadByCategory->map(function ($cat) use ($colors) {
         $cat->color = $colors[crc32($cat->category_name) % count($colors)];
         return $cat;
     });
 
-    $leadByCategory = $leadByCategory->sortBy(function($cat) use ($priority) {
+    $leadByCategory = $leadByCategory->sortBy(function ($cat) use ($priority) {
         $index = array_search($cat->category_name, $priority);
         return $index === false ? 999 : $index;
     });
@@ -44,21 +60,7 @@ public function dashboard()
 
 
 
-public function byCategory($category)
-{
-      $leads = Lead::with('crm.category') 
-    ->whereHas('crm.category', function($q) use ($category) {
-        $q->where('name', $category);
-    })
-    ->paginate(20);
-
-
-    return view('leads.index', compact('leads', 'category'));
-}
-
-
-
-public function index(Request $request)
+public function byCategory($category, Request $request)
 {
     $categories = Categories::whereIn('id', function ($query) {
         $query->select('category_id')
@@ -68,12 +70,109 @@ public function index(Request $request)
               });
     })->get();
 
+    $leadsQuery = Lead::with(['crm.category', 'assignedUser', 'followUps'])
+        ->whereHas('crm.category', function($q) use ($category) {
+            $q->where('name', $category);
+        });
+
+    $sort = $request->get('sort', 'created_at_desc');
+
+    switch ($sort) {
+        case 'created_at_asc':
+            $leadsQuery->orderBy('created_at', 'asc');
+            break;
+        case 'created_at_desc':
+            $leadsQuery->orderBy('created_at', 'desc');
+            break;
+        case 'name_asc':
+            $leadsQuery->orderBy(
+                Crm::select('name')->whereColumn('crm.id', 'leads.crm_id'),
+                'asc'
+            );
+            break;
+        case 'name_desc':
+            $leadsQuery->orderBy(
+                Crm::select('name')->whereColumn('crm.id', 'leads.crm_id'),
+                'desc'
+            );
+            break;
+        case 'status_asc':
+            $leadsQuery->orderBy('status', 'asc');
+            break;
+        case 'status_desc':
+            $leadsQuery->orderBy('status', 'desc');
+            break;
+        case 'assigned_to_asc':
+            $leadsQuery->orderBy(
+                User::select('name')->whereColumn('users.id', 'leads.assigned_to'),
+                'asc'
+            );
+            break;
+        case 'assigned_to_desc':
+            $leadsQuery->orderBy(
+                User::select('name')->whereColumn('users.id', 'leads.assigned_to'),
+                'desc'
+            );
+            break;
+        case 'category_asc':
+            $leadsQuery->orderBy('category', 'asc');
+            break;
+        case 'category_desc':
+           $leadsQuery->orderBy('category', 'desc');
+            break;
+        case 'lastcontact_asc':
+            $leadsQuery->orderBy(
+                FollowUp::select('date')
+                    ->whereColumn('follow_ups.lead_id', 'leads.id')
+                    ->orderBy('date', 'asc')
+                    ->take(1),
+                'asc'
+            );
+            break;
+        case 'lastcontact_desc':
+            $leadsQuery->orderBy(
+                FollowUp::select('date')
+                    ->whereColumn('follow_ups.lead_id', 'leads.id')
+                    ->orderBy('date', 'desc')
+                    ->take(1),
+                'desc'
+            );
+            break;
+        default:
+            $leadsQuery->orderBy('created_at', 'desc');
+            break;
+    }
+
+    $leads = $leadsQuery->paginate(20)->appends($request->query());
+
+    $selectedCategory = $category;
+
+    return view('leads.index', compact('categories', 'leads', 'selectedCategory', 'sort'));
+}
+
+
+
+
+public function index(Request $request)
+{
+    $user = auth()->user();
+
+    if ($user->role === 'admin') {
+        $categories = \App\Models\Categories::all();
+    } else {
+        $categories = $user->categories; 
+    }
+
+    $categoryIds = $categories->pluck('id'); 
     $selectedCategoryId = $request->get('category_id');
     $sort = $request->get('sort', 'created_at_desc');
 
-    $leadsQuery = Lead::with(['crm.category', 'assignedUser', 'followUps']);
+    $leadsQuery = Lead::with(['crm.category', 'assignedUser', 'followUps'])
+        ->whereHas('crm', function ($q) use ($categoryIds) {
+            $q->whereIn('category_id', $categoryIds);
+        }); 
 
-    if ($selectedCategoryId) {
+    if ($selectedCategoryId && $categoryIds->contains($selectedCategoryId)) {
         $leadsQuery->whereHas('crm', function ($q) use ($selectedCategoryId) {
             $q->where('category_id', $selectedCategoryId);
         });
@@ -87,42 +186,63 @@ public function index(Request $request)
             $leadsQuery->orderBy('created_at', 'desc');
             break;
         case 'name_asc':
-            $leadsQuery->orderBy(Crm::select('name')->whereColumn('crm.id', 'leads.crm_id'), 'asc');
+            $leadsQuery->orderBy(
+                Crm::select('name')->whereColumn('crm.id', 'leads.crm_id'),
+                'asc'
+            );
             break;
         case 'name_desc':
-            $leadsQuery->orderBy(Crm::select('name')->whereColumn('crm.id', 'leads.crm_id'), 'desc');
+            $leadsQuery->orderBy(
+                Crm::select('name')->whereColumn('crm.id', 'leads.crm_id'),
+                'desc'
+            );
             break;
         case 'status_asc':
             $leadsQuery->orderBy('status', 'asc');
             break;
-        case 'status_desc':    
+        case 'status_desc':
             $leadsQuery->orderBy('status', 'desc');
             break;
         case 'assigned_to_asc':
-            $leadsQuery->orderBy(User::select('name')->whereColumn('users.id', 'leads.assigned_to'), 'asc');
+            $leadsQuery->orderBy(
+                User::select('name')->whereColumn('users.id', 'leads.assigned_to'),
+                'asc'
+            );
             break;
         case 'assigned_to_desc':
-            $leadsQuery->orderBy(User::select('name')->whereColumn('users.id', 'leads.assigned_to'), 'desc');
+            $leadsQuery->orderBy(
+                User::select('name')->whereColumn('users.id', 'leads.assigned_to'),
+                'desc'
+            );
             break;
-        case 'category_asc':    
-             $leadsQuery->orderBy('category', 'asc');
+        case 'lastcontact_asc':
+            $leadsQuery->orderBy(
+                FollowUp::select('date')
+                    ->whereColumn('follow_ups.lead_id', 'leads.id')
+                    ->latest('date')
+                    ->take(1),
+                'asc'
+            );
             break;
-        case 'category_desc':    
-             $leadsQuery->orderBy('category', 'desc');
+        case 'lastcontact_desc':
+            $leadsQuery->orderBy(
+                FollowUp::select('date')
+                    ->whereColumn('follow_ups.lead_id', 'leads.id')
+                    ->latest('date')
+                    ->take(1),
+                'desc'
+            );
             break;
         default:
             $leadsQuery->orderBy('created_at', 'desc');
             break;
     }
 
-    
     $leads = $leadsQuery->paginate(20)->appends($request->query());
 
-
-    return view('leads.index', compact(
-        'categories', 'leads', 'selectedCategoryId', 'sort'
-    ));
+    return view('leads.index', compact('categories', 'leads', 'selectedCategoryId', 'sort'));
 }
+
 
 
 
@@ -167,7 +287,6 @@ public function create()
             'crm_id' => 'required|exists:crm,id',
             'source' => 'nullable|string|max:255',
             'status' => 'required|string',
-            // 'category' => 'required|string',
             'assigned_to' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ]);

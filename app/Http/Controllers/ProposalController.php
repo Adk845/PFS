@@ -85,8 +85,8 @@ public function store(Request $request)
 
             ProposalFile::create([
                 'proposal_id' => $proposal->id,
-                'filename'    => $file->getClientOriginalName(),
-                'filepath'    => $path,
+                'file_name'    => $file->getClientOriginalName(),
+                'file_path'    => $path,
             ]);
         }
     }
@@ -113,4 +113,60 @@ public function show($id)
     return view('proposal.show', compact('proposal'));
 }
 
+public function edit($id)
+{
+    $proposal = Proposal::findOrFail($id);
+    $leads = Lead::all();
+    $users = User::all();
+    return view('proposal.edit', compact('proposal', 'leads', 'users'));
+
 }
+
+public function update(Request $request, $id)
+{
+    $proposal = Proposal::findOrFail($id);
+
+    $validated = $request->validate([
+        'lead_id'     => 'required|exists:leads,id',
+        'title'       => 'required|string|max:255',
+        'status'      => 'required|in:draft,submitted,awaiting_po,awarded,decline,lost',
+        'assign_to'   => 'nullable|exists:users,id',
+        'description' => 'nullable|string',
+        'files.*'     => 'nullable|file|mimes:pdf,doc,docx,xlsx,xls,ppt,pptx,jpg,jpeg,png|max:10240',
+    ]);
+
+    $proposal->update([
+        'lead_id'     => $validated['lead_id'],
+        'title'       => $validated['title'],
+        'status'      => $validated['status'],
+        'assign_to'   => $validated['assign_to'] ?? null,
+        'description' => $validated['description'] ?? null,
+    ]);
+
+    if ($request->hasFile('files')) {
+        foreach ($request->file('files') as $file) {
+            $path = $file->store('proposal_files', 'public');
+
+            ProposalFile::create([
+                'proposal_id' => $proposal->id,
+                'file_name'    => $file->getClientOriginalName(),
+                'file_path'    => $path,
+            ]);
+        }
+    }
+
+    return redirect()
+        ->route('proposals.show', $proposal->id)
+        ->with('success', 'Proposal has been successfully updated!');
+}
+
+
+public function show2($id)
+{
+    $proposal = Proposal::with('lead.followUps','lead.crm','lead.persona', 'assignedUser', 'files.file_name')->findOrFail($id);
+    return view('proposal.show2', compact('proposal'));
+}
+
+}
+
+  
