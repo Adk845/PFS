@@ -4,6 +4,10 @@
 />
 
 <x-app-layout>
+     <marquee behavior="scroll" direction="left" scrollamount="6" style="background-color: #ec1b2dff; color: #fce9ebff; padding: 10px; font-weight: bold;">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Sorry, this page is still under construction.
+    </marquee>
 <div class="container py-4">
 
   {{-- ALERTS --}}
@@ -32,15 +36,29 @@
   <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
     <div>
       <h2 class="fw-bold text-danger mb-0">
-        <i class="bi bi-people-fill me-2"></i>
+        <i class="bi bi-folder-fill me-2"></i>
         Proposal List
       </h2>
       <p class="text-muted small mb-0">Stay organized and keep track of every proposal’s progress</p>
     </div>
 
+    <div>
+    <!-- <a href="{{ asset('scripts/open_folder.bat') }}" download class="btn btn-danger shadow-sm">
+        <i class="bi bi-folder2-open me-1"></i> Open Folder in Explorer
+    </a>
+
+    <a href="file://192.168.2.10/sharing folder" class="btn btn-danger shadow-sm">
+      <i class="bi bi-folder2-open me-1"></i> Open Folder in server
+    </a> -->
+
+
+
+
     <a href="{{ route('proposals.create') }}" class="btn btn-danger shadow-sm">
       <i class="bi bi-plus-circle me-1"></i> Add
     </a>
+    </div>
+
   </div>
 
   {{-- TABLE --}}
@@ -87,10 +105,18 @@
             <td class="text-center">{{ $proposals->firstItem() + $index }}</td>
             <td>{{ $proposal->created_at->format('d M Y') }}</td>
             <td>{{ $proposal->title }}</td>
-            <td>{{ $proposal->lead->crm->name }}
-                <br>
+            <!-- <td>{{ $proposal->lead->crm->name }} -->
+
+            <td class="fw-semibold" title="View Detail Lead">
+              <a href="{{ route('proposals.show2', $proposal->id) }}" class="text-decoration-none text-dark">
+                  {{ $proposal->lead->crm->name  }}
+              </a>
+              <br>
+               <small class="text-danger">{{$proposal->lead->crm->company}}</small>
+          </td>
+                <!-- <br>
                 <small class="text-danger">{{$proposal->lead->crm->company}}</small>
-            </td>
+            </td> -->
 
             <td>
               @php

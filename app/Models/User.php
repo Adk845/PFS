@@ -44,4 +44,13 @@ class User extends Authenticatable
         'last_login_at' => 'datetime', 
         'password' => 'hashed',
     ];
+
+public function categories()
+{
+    return $this->belongsToMany(Categories::class, 'category_user', 'user_id', 'category_id');
+}
+
+
+
+
 }

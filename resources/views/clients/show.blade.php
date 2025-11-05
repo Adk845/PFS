@@ -60,7 +60,6 @@
           </div>
         </div>
 
-        <!-- KANAN: Customer Persona -->
        <!-- KANAN: Customer Persona -->
 <div class="flex-1 min-w-[320px] bg-white shadow rounded-lg p-6">
   <h3 class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Customer Persona</h3>

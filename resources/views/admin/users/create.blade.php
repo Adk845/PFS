@@ -30,6 +30,25 @@
                         <input type="password" name="password_confirmation" class="w-full border rounded p-2">
                     </div>
 
+             
+
+                            <div>
+                        <label class="block font-semibold text-gray-800 dark:text-gray-200 mb-2">
+                            Accessible Categories
+                        </label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            @foreach($categories as $category)
+                                <label class="flex items-center space-x-2">
+                                    <input type="checkbox" 
+                                           name="categories[]" 
+                                           value="{{ $category->id }}"
+                                           class="rounded text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-gray-700 dark:text-gray-300">{{ $category->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="mb-4">
                         <label class="block">Role</label>
                         <select name="role" class="w-full border rounded p-2">

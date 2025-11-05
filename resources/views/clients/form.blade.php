@@ -47,7 +47,8 @@
 <div class="crm-card">
 
     <div class="text-center mb-3">
-        <img src="{{ asset('assets/image/logo-isol.png') }}" alt="Logo" width="200" height="80">
+    <img src="{{ asset('images/ISOLUTIONS.png') }}" alt="Logo" width="200" height="80">
+
     </div>
 
 
@@ -74,9 +75,9 @@
             </div>
 
             <div class="col-md-6">
-                <label for="email" class="form-label">Email Address<span class="text-danger">*</span></label>
+                <label for="email" class="form-label">Email Address</label>
                 <input type="text" name="email" id="email" class="form-control"
-                       placeholder="Enter email" value="{{ old('email') }}" required>
+                       placeholder="Enter email" value="{{ old('email') }}" >
             </div>
 
            <div class="col-md-6">
@@ -87,7 +88,7 @@
         </div>
 
           <div class="col-md-6">
-            <label for="company" class="form-label">Company Nam e</label>
+            <label for="company" class="form-label">Company Name</label>
             <input type="text" name="company" id="company" class="form-control"
                 placeholder="Example: Isolutions Indonesia, PT" value="{{ old('company') }}" >
             <!-- <small class="form-text text-muted">
