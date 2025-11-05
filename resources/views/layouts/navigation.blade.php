@@ -34,18 +34,26 @@
        class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
         <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
     </a>
-
-     @if(Auth::user()->role === 'admin')
-    <a href="{{ route('crm.index') }}"
-       class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
-        <i class="fas fa-users mr-2"></i> CRM
-    </a>
-
-
+@php
+    $user = Auth::user();
+@endphp
+    @if($user && ($user->role === 'admin' || $user->categories->isNotEmpty()))
     <a href="{{ route('leads.dashboard') }}"
        class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
         <i class="fas fa-users mr-2"></i> Leads
     </a>
+
+      <a href="{{ route('crm.index') }}"
+       class="flex items-center text-sm font-medium text-white dark:text-gray-300 hover:text-gray-200 transition">
+        <i class="fas fa-users mr-2"></i> CRM
+    </a>
+@endif
+
+     @if(Auth::user()->role === 'admin')
+  
+
+
+  
 
     
     <a href="{{ route('proposals.index') }}"
@@ -86,10 +94,7 @@
             </a>
            
 
-            <!-- <a href="{{ route('leads.index') }}" 
-               class="flex items-center px-4 py-2 text-sm hover:bg-gray-700 rounded-b-lg transition">
-                <i class="fas fa-envelope mr-2"></i> Broadcast Email
-            </a> -->
+          
         </div>
     </div>
 @endif
@@ -171,40 +176,97 @@
     </div>
 
     <!-- Responsive Menu -->
-    <div :class="{ 'block': open, 'hidden': ! open }" class="hidden sm:hidden">
-        <!-- Links -->
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" 
-                                   :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
+    <div :class="{ 'block': open, 'hidden': ! open }" class="hidden sm:hidden ">
+    <!-- Links -->
+    <div class="pt-2 pb-3 space-y-1 ">
+        <x-responsive-nav-link :href="route('dashboard')" 
+                               :active="request()->routeIs('dashboard')" class="text-white">
+            <i class="fas fa-tachometer-alt mr-2"></i> {{ __('Dashboard') }}
+        </x-responsive-nav-link>
 
-        <!-- User Info + Settings -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">
-                    {{ Auth::user()->name }}
-                </div>
-                <div class="font-medium text-sm text-gray-500">
-                    {{ Auth::user()->email }}
-                </div>
-            </div>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+
+       
+
+        
+        <!-- Admin Dropdown (Optional for mobile) -->
+        <div x-data="{ openAdmin: false }" class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600-1">
+            <button @click="openAdmin = !openAdmin"
+                class="flex items-center w-full px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200  rounded-lg transition text-white">
+                <i class="fas fa-user-shield mr-2"></i> Menu
+                <i class="fas fa-chevron-down ml-auto text-xs"></i>
+            </button> 
+            @if(Auth::user()->role === 'admin')
+            <div x-show="openAdmin" class="mt-1 space-y-1 pl-6">
+                <x-responsive-nav-link :href="route('admin.users')" 
+                                       :active="request()->routeIs('admin.users')" class="text-white">
+                    <i class="fas fa-user mr-2"></i> Users
                 </x-responsive-nav-link>
 
-                <!-- Logout -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
+                <x-responsive-nav-link :href="route('categories.index')" 
+                                       :active="request()->routeIs('categories.index')" class="text-white">
+                    <i class="fas fa-envelope mr-2"></i> Category
+                </x-responsive-nav-link>
+
+                       
+        <x-responsive-nav-link :href="route('crm.index')" 
+                               :active="request()->routeIs('crm.index')" class="text-white">
+            <i class="fas fa-users mr-2 "></i> CRM
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link :href="route('leads.dashboard')" 
+                               :active="request()->routeIs('leads.dashboard')" class="text-white">
+            <i class="fas fa-users mr-2"></i> Leads
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link :href="route('proposals.index')" 
+                               :active="request()->routeIs('proposals.index')" class="text-white">
+            <i class="fas fa-file mr-2"></i> Proposals
+        </x-responsive-nav-link>
+        @endif
+
+
+          <x-responsive-nav-link :href="route('experience.index')" 
+                               :active="request()->routeIs('experience.index')" class="text-white">
+            <i class="fas fa-briefcase mr-2"></i> Experience Details
+        </x-responsive-nav-link>
+
+        <x-responsive-nav-link :href="route('broadcast.index')" 
+                               :active="request()->routeIs('broadcast.index')" class="text-white">
+            <i class="fas fa-envelope mr-2"></i> Broadcast Email
+        </x-responsive-nav-link>
+           
+        </div>
+
+       
+    </div>
+
+    <!-- User Info + Settings -->
+    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+        <div class="px-4">
+            <div class="font-medium text-base text-gray-800 dark:text-gray-200 text-white">
+                {{ Auth::user()->name }}
+            </div>
+            <div class="font-medium text-sm text-gray-500 text-white">
+                {{ Auth::user()->email }}
             </div>
         </div>
+
+        <div class="mt-3 space-y-1">
+            <x-responsive-nav-link :href="route('profile.edit')" class="text-white">
+                {{ __('Profile') }}
+            </x-responsive-nav-link>
+
+            <!-- Logout -->
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <x-responsive-nav-link :href="route('logout')"
+                    onclick="event.preventDefault(); this.closest('form').submit();" class="text-white">
+                    {{ __('Log Out') }}
+                </x-responsive-nav-link>
+            </form>
+        </div>
     </div>
+</div>
+
 </nav>
